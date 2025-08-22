@@ -3,37 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>בית</title>
+<title>רישום לתגבורים שנת 2026 מחצית א</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="site-header">
-  <div class="container">
-    <h1>פרויקט לתלמידים</h1>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="header-container">
+    <img src="logo.img" alt="לוגו שמאל" class="logo-lg">
+    <h1>רישום לתגבורים שנת 2026 מחצית א</h1>
+    <img src="logo.img" alt="לוגו ימין" class="logo-lg">
   </div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
 </header>
 
-<div class="sidebar" id="sidebar">
+<div id="sidebar" class="sidebar">
   <nav>
-    <a href="index.html" class="active">בית</a>
+    <a href="index.html">בית</a>
     <a href="info.html">מידע</a>
     <a href="register.html">רישום</a>
     <a href="admin.html">מנהל</a>
   </nav>
 </div>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
 <main class="container">
-  <section class="features-grid">
-    <div class="feature-card">ריבוע 1 – תוכן</div>
-    <div class="feature-card">ריבוע 2 – תוכן</div>
-    <div class="feature-card">ריבוע 3 – תוכן</div>
+  <section class="hero">
+    <div class="features-grid">
+      <div class="feature-card">פעילות 1</div>
+      <div class="feature-card">פעילות 2</div>
+      <div class="feature-card">פעילות 3</div>
+    </div>
   </section>
 </main>
 
 <footer class="site-footer">
-  <div class="container">© 2025 פרויקט לתלמידים</div>
+  <div class="container">
+    <span>© 2025 פרויקט לתלמידים</span>
+  </div>
 </footer>
 
 <script src="script.js"></script>
