@@ -7,13 +7,14 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="site-header">
+
+<header class="homepage-header">
   <div class="header-container">
-    <img src="logo.img" alt="לוגו שמאל" class="logo-lg">
+    <img src="logo.jpeg" alt="לוגו שמאל" class="logo-lg">
     <h1>רישום לתגבורים שנת 2026 מחצית א</h1>
-    <img src="logo.img" alt="לוגו ימין" class="logo-lg">
+    <img src="logo.jpeg" alt="לוגו ימין" class="logo-lg">
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
 </header>
 
 <div id="sidebar" class="sidebar">
@@ -26,20 +27,16 @@
 </div>
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<main class="container">
-  <section class="hero">
-    <div class="features-grid">
-      <div class="feature-card">פעילות 1</div>
-      <div class="feature-card">פעילות 2</div>
-      <div class="feature-card">פעילות 3</div>
-    </div>
-  </section>
+<main class="homepage-footer">
+  <div class="triangle-grid">
+    <div class="content-box">פעילות 1</div>
+    <div class="content-box">פעילות 2</div>
+    <div class="content-box">פעילות 3</div>
+  </div>
 </main>
 
 <footer class="site-footer">
-  <div class="container">
-    <span>© 2025 פרויקט לתלמידים</span>
-  </div>
+  <span>© 2025 פרויקט לתלמידים</span>
 </footer>
 
 <script src="script.js"></script>
