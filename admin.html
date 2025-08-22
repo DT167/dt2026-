@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול הרשמות</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1>דף מנהל</h1>
+  </div>
+</header>
+
+<main class="container">
+<section class="content">
+
+<h2>כניסה למנהל</h2>
+<input type="password" id="adminPassword" placeholder="סיסמה">
+<button class="btn btn-primary" id="loginBtn">כניסה</button>
+
+<div id="adminPanel" style="display:none; margin-top:20px;">
+
+  <h2>ניהול זמינות תאריכים ושעות</h2>
+  <div>
+    <input type="date" id="newDate">
+    <input type="time" id="newTime">
+    <button class="btn" id="addAvailabilityBtn">הוסף מועד</button>
+  </div>
+  <ul id="availabilityList"></ul>
+
+  <h2 style="margin-top:30px;">רשומות הרשמה</h2>
+  <table id="registrationsTable" border="1" style="width:100%; margin-top:16px; border-collapse:collapse;">
+    <thead>
+      <tr>
+        <th>שם מלא</th>
+        <th>תאריך</th>
+        <th>שעה</th>
+        <th>סטטוס</th>
+        <th>פעולה</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button class="btn" id="exportBtn">ייצוא ל-CSV</button>
+
+</div>
+
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2025 פרויקט לתלמידים</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
