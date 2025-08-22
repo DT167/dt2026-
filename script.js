@@ -1,149 +1,172 @@
-// === הגדרות כלליות ===
-// כתובת ה-Web App לאחר פרסום ה-Apps Script (ראה README)
-const FORM_ENDPOINT = "YOUR_DEPLOYED_WEB_APP_URL"; // לדוגמה: https://script.google.com/macros/s/AKfycbx.../exec
-
-// טווח שעות אפשרי (ניתן להתאים): 09:00–17:00 בהפרשים של 30 דק׳
-const SLOT_START = 9;   // 9:00
-const SLOT_END   = 17;  // 17:00
-const SLOT_STEP_MIN = 30;
-
-// ימי השבוע שמותרים לרישום (0=ראשון ... 6=שבת). לדוגמה: א׳–ה׳ בלבד
-const ALLOWED_WEEKDAYS = [0,1,2,3,4];
-
-// תאריך מינימלי לרישום – מחר (אפשר לשנות ל-0 כדי לאפשר מהיום)
-const MIN_START_OFFSET_DAYS = 1;
-
-// === עזרי תצוגה ===
-function pad(n){return String(n).padStart(2,'0');}
-function toISODate(d){return d.toISOString().slice(0,10);}
-
-function buildTimeSlots(){
-  const slots = [];
-  for(let h=SLOT_START; h<=SLOT_END; h++){
-    for(let m=0; m<60; m+=SLOT_STEP_MIN){
-      const label = `${pad(h)}:${pad(m)}`;
-      slots.push(label);
-    }
-  }
-  return slots;
+// Toggle sidebar menu
+function toggleMenu() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  if(sidebar) sidebar.classList.toggle('active');
+  if(overlay) overlay.classList.toggle('active');
 }
 
-function isAllowedWeekday(dateStr){
-  const d = new Date(dateStr + 'T00:00:00');
-  const wd = d.getDay(); // 0=Sunday
-  return ALLOWED_WEEKDAYS.includes(wd);
+// --------------------
+// Register Page Code
+// --------------------
+if(document.getElementById("registration-form")) {
+  let availability = JSON.parse(localStorage.getItem("availability") || "{}");
+
+  const dateSelect = document.getElementById("dateSelect");
+  const timeSelect = document.getElementById("timeSelect");
+
+  // Populate date
+  Object.keys(availability).forEach(date => {
+    const option = document.createElement("option");
+    option.value = date;
+    option.textContent = date;
+    dateSelect.appendChild(option);
+  });
+
+  dateSelect.addEventListener("change", () => {
+    timeSelect.innerHTML = '<option value="" disabled selected>בחר שעה…</option>';
+    const selectedDate = dateSelect.value;
+    (availability[selectedDate] || []).forEach(time => {
+      const option = document.createElement("option");
+      option.value = time;
+      option.textContent = time;
+      timeSelect.appendChild(option);
+    });
+  });
+
+  let registrations = JSON.parse(localStorage.getItem("registrations") || "[]");
+
+  document.getElementById("registration-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fullName = e.target.fullName.value.trim();
+    const date = e.target.date.value;
+    const time = e.target.time.value;
+
+    const exists = registrations.some(r => r.date===date && r.time===time);
+    const statusEl = document.getElementById("status");
+    if(exists) {
+      statusEl.textContent = "המועד הזה כבר נרשם, בחרו מועד אחר.";
+      return;
+    }
+
+    registrations.push({fullName, date, time, status:"ממתין"});
+    localStorage.setItem("registrations", JSON.stringify(registrations));
+    statusEl.textContent = "הרישום נשמר בהצלחה!";
+    e.target.reset();
+    timeSelect.innerHTML = '<option value="" disabled selected>בחר שעה…</option>';
+  });
 }
 
-// === שליפת זמינות מהשרת ===
-async function fetchTakenTimes(dateStr){
-  if(!FORM_ENDPOINT) return [];
-  const url = new URL(FORM_ENDPOINT);
-  url.searchParams.set('date', dateStr);
-  const res = await fetch(url, { method:'GET' });
-  if(!res.ok){
-    console.warn('fetchTakenTimes failed', res.status);
-    return [];
-  }
-  const data = await res.json();
-  return Array.isArray(data.taken) ? data.taken : [];
+// --------------------
+// Admin Page Code
+// --------------------
+if(document.getElementById("loginBtn")) {
+  const correctPassword = "admin123"; // שנה לפי הצורך
+  const loginBtn = document.getElementById("loginBtn");
+  const adminPanel = document.getElementById("adminPanel");
+
+  loginBtn.addEventListener("click", () => {
+    const pwd = document.getElementById("adminPassword").value;
+    if(pwd === correctPassword) {
+      adminPanel.style.display = "block";
+      loadRegistrations();
+      loadAvailability();
+    } else {
+      alert("סיסמה שגויה!");
+    }
+  });
+
+  let registrations = JSON.parse(localStorage.getItem("registrations") || "[]");
+  let availability = JSON.parse(localStorage.getItem("availability") || "{}");
+
+  function loadRegistrations() {
+    const tbody = document.querySelector("#registrationsTable tbody");
+    tbody.innerHTML = "";
+    registrations.forEach((r,index) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${r.fullName}</td>
+                      <td>${r.date}</td>
+                      <td>${r.time}</td>
+                      <td>${r.status}</td>
+                      <td>
+                        <button onclick="approveRegistration(${index})">אשר</button>
+                        <button onclick="deleteRegistration(${index})">מחק</button>
+                      </td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  window.approveRegistration = function(index){
+    registrations[index].status = "מאושר";
+    localStorage.setItem("registrations", JSON.stringify(registrations));
+    loadRegistrations();
+  }
+
+  window.deleteRegistration = function(index){
+    if(confirm("בטוח שברצונך למחוק רשומה זו?")){
+      registrations.splice(index,1);
+      localStorage.setItem("registrations", JSON.stringify(registrations));
+      loadRegistrations();
+    }
+  }
+
+  document.getElementById("exportBtn").addEventListener("click", () => {
+    if(!registrations.length) { alert("אין רשומות לייצוא"); return; }
+    const headers = ["שם מלא","תאריך","שעה","סטטוס"];
+    const csvContent = [
+      headers.join(","),
+      ...registrations.map(r => [r.fullName,r.date,r.time,r.status].join(","))
+    ].join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "registrations.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  // --------------------
+  // Availability management
+  // --------------------
+  const availabilityList = document.getElementById("availabilityList");
+  const addBtn = document.getElementById("addAvailabilityBtn");
+
+  function loadAvailability(){
+    availabilityList.innerHTML="";
+    Object.keys(availability).forEach(date=>{
+      availability[date].forEach(time=>{
+        const li = document.createElement("li");
+        li.textContent = `${date} - ${time} `;
+        const delBtn = document.createElement("button");
+        delBtn.textContent="מחק";
+        delBtn.onclick = () => {
+          deleteAvailability(date,time);
+        };
+        li.appendChild(delBtn);
+        availabilityList.appendChild(li);
+      });
+    });
+    localStorage.setItem("availability", JSON.stringify(availability));
+  }
+
+  function deleteAvailability(date,time){
+    availability[date] = availability[date].filter(t=>t!==time);
+    if(availability[date].length===0) delete availability[date];
+    loadAvailability();
+  }
+
+  addBtn.addEventListener("click",()=>{
+    const date = document.getElementById("newDate").value;
+    const time = document.getElementById("newTime").value;
+    if(!date || !time){ alert("בחר תאריך ושעה"); return;}
+    if(!availability[date]) availability[date]=[];
+    if(availability[date].includes(time)){ alert("המועד כבר קיים"); return;}
+    availability[date].push(time);
+    document.getElementById("newDate").value="";
+    document.getElementById("newTime").value="";
+    loadAvailability();
+  });
 }
 
-// === מילוי רשימת השעות ו"ביטול" תפוסות ===
-async function populateTimeSelect(dateStr){
-  const select = document.getElementById('timeSelect');
-  select.innerHTML = '<option value="" disabled selected>בחר שעה…</option>';
-  const slots = buildTimeSlots();
-  const taken = await fetchTakenTimes(dateStr);
-  const takenSet = new Set(taken);
-  slots.forEach(t => {
-    const opt = document.createElement('option');
-    opt.value = t; opt.textContent = t;
-    if(takenSet.has(t)){
-      opt.disabled = true; opt.textContent = `${t} (תפוס)`;
-    }
-    select.appendChild(opt);
-  });
-}
-
-// === אתחול טופס ===
-function initForm(){
-  const form = document.getElementById('registration-form');
-  if(!form) return;
-  const datePicker = document.getElementById('datePicker');
-  const statusEl = document.getElementById('status');
-  const resetBtn = document.getElementById('resetBtn');
-
-  const today = new Date();
-  const minDate = new Date(today);
-  minDate.setDate(today.getDate() + MIN_START_OFFSET_DAYS);
-  datePicker.min = toISODate(minDate);
-
-  datePicker.addEventListener('change', async (e) => {
-    const value = e.target.value;
-    if(!value) return;
-    if(!isAllowedWeekday(value)){
-      statusEl.textContent = 'לא ניתן לבחור תאריך זה. בחרו יום א׳–ה׳.';
-      document.getElementById('timeSelect').innerHTML = '<option value="" disabled selected>בחר שעה…</option>';
-      return;
-    }
-    statusEl.textContent = 'טוען זמינות…';
-    await populateTimeSelect(value);
-    statusEl.textContent = '';
-  });
-
-  resetBtn?.addEventListener('click', ()=>{
-    statusEl.textContent = '';
-  });
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    statusEl.textContent = 'שולח…';
-
-    const formData = new FormData(form);
-    const payload = Object.fromEntries(formData.entries());
-
-    if(!payload.date){ statusEl.textContent = 'בחרו תאריך.'; return; }
-    if(!isAllowedWeekday(payload.date)){ statusEl.textContent = 'בחרו יום א׳–ה׳.'; return; }
-    if(!payload.time){ statusEl.textContent = 'בחרו שעה.'; return; }
-
-    try{
-      const res = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-      if(res.ok && data.success){
-        form.reset();
-        document.getElementById('timeSelect').innerHTML = '<option value="" disabled selected>בחר שעה…</option>';
-        statusEl.textContent = 'נרשמתם בהצלחה! התקבל אישור.';
-      } else {
-        statusEl.textContent = data.message || 'אירעה שגיאה בשליחה.';
-      }
-    }catch(err){
-      console.error(err);
-      statusEl.textContent = 'שגיאת רשת. נסו שוב מאוחר יותר.';
-    }
-  });
-}
-
-// קוד חדש לתפריט הצדדי
-const menuToggle = document.getElementById('menu-toggle');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
-
-function toggleSidebar() {
-  sidebar.classList.toggle('active');
-  overlay.classList.toggle('active');
-}
-
-if(menuToggle && sidebar && overlay){
-  menuToggle.addEventListener('click', toggleSidebar);
-  overlay.addEventListener('click', toggleSidebar);
-}
-
-if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', initForm);
-}else{
-  initForm();
-}
