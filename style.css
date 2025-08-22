@@ -23,14 +23,24 @@ body {
   backdrop-filter:saturate(140%) blur(8px);
   border-bottom:1px solid var(--border);
   z-index:10;
+  text-align:center;
 }
+.site-header h1 {
+  color: #0f172a; /* Dark blue color */
+  text-align: center;
+  margin: 0;
+  padding-top: 10px; /* Adjust as needed for spacing */
+}
+
 .site-header .container{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  padding:12px 0;
+  justify-content:center; /* Center the menu toggle */
+  padding:10px 0;
 }
-.logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px; margin:0 auto;}
+.logo{
+  display: none; /* Hide the empty logo link */
+}
 
 /* מיקום הסמלים */
 .site-header .container::before,
