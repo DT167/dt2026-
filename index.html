@@ -1,69 +1,41 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>האתר שלי</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>בית</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  <!-- Header עם כפתור המבורגר -->
-  <header class="site-header">
-    <div class="container">
-      <h1>האתר שלי</h1>
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    </div>
-  </header>
-
-  <!-- Sidebar / תפריט צדדי -->
-  <div class="sidebar" id="sidebar">
-    <nav>
-      <a href="#">בית</a>
-      <a href="#">מידע</a>
-      <a href="#">רישום</a>
-    </nav>
+<header class="site-header">
+  <div class="container">
+    <h1>פרויקט לתלמידים</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   </div>
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+</header>
 
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>ברוכים הבאים!</h1>
-    <p>כאן תמצאו מידע חשוב ושירותים מגניבים.</p>
+<div class="sidebar" id="sidebar">
+  <nav>
+    <a href="index.html" class="active">בית</a>
+    <a href="info.html">מידע</a>
+    <a href="register.html">רישום</a>
+    <a href="admin.html">מנהל</a>
+  </nav>
+</div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<main class="container">
+  <section class="features-grid">
+    <div class="feature-card">ריבוע 1 – תוכן</div>
+    <div class="feature-card">ריבוע 2 – תוכן</div>
+    <div class="feature-card">ריבוע 3 – תוכן</div>
   </section>
+</main>
 
-  <!-- Features Grid מסודר במשולש כלפי מטה -->
-  <section class="features-grid container">
-    <div class="feature-card card-top">
-      <h2>כרטיס עליון</h2>
-      <p>תוכן זמני</p>
-    </div>
-    <div class="feature-row">
-      <div class="feature-card">
-        <h2>כרטיס שמאל</h2>
-        <p>תוכן זמני</p>
-      </div>
-      <div class="feature-card">
-        <h2>כרטיס ימין</h2>
-        <p>תוכן זמני</p>
-      </div>
-    </div>
-  </section>
+<footer class="site-footer">
+  <div class="container">© 2025 פרויקט לתלמידים</div>
+</footer>
 
-  <!-- Footer -->
-  <footer class="site-footer">
-    <div class="container">
-      &copy; 2025 האתר שלי. כל הזכויות שמורות.
-    </div>
-  </footer>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById('sidebar').classList.toggle('active');
-      document.getElementById('overlay').classList.toggle('active');
-    }
-  </script>
+<script src="script.js"></script>
 </body>
 </html>
-
-
