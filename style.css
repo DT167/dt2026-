@@ -36,7 +36,7 @@ body{
   width: 50px; /* רוחב הסמל */
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url('img/logo.img'); /* הנתיב המתוקן */
+  background-image: url('img/logo.png');
 }
 
 .site-header .container::before {
