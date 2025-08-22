@@ -1,62 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>מידע | פרויקט לתלמידים</title>
-<link rel="stylesheet" href="style.css" />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מידע</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header class="site-header">
-<div class="container">
-<a class="logo" href="index.html">פרויקט לתלמידים</a>
-<nav class="nav">
-<a href="index.html">בית</a>
-<a href="info.html" class="active">מידע</a>
-<a href="register.html" class="cta">רישום</a>
-</nav>
-</div>
+  <div class="container">
+    <a class="logo" href="index.html">פרויקט לתלמידים</a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  </div>
 </header>
 
+<div class="sidebar" id="sidebar">
+  <nav>
+    <a href="index.html">בית</a>
+    <a href="info.html" class="active">מידע</a>
+    <a href="register.html">רישום</a>
+  </nav>
+</div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
 <main class="container">
-<article class="content">
-<h1>על הפרויקט</h1>
-<p>
-כאן ניתן לכתוב הסבר כללי על הארגון/הפרויקט: מטרות, פעילויות, ערכים ולמי זה מיועד.
-הוסף תמונות, קישורים ומידע שימושי לתלמידים ולהורים.
-</p>
+  <section class="content">
+    <h1>מידע על שיעורי התגבור</h1>
+    <p>באתר זה תוכלו למצוא מידע אודות שיעורי התגבור המוצעים לתלמידים, התאריכים והשעות, דרכי ההרשמה והסבר על מטרות השיעורים.</p>
 
-<h2>איך זה עובד?</h2>
-<ol>
-<li>קוראים את המידע כאן כדי להבין מה מצפים מהמשתתפים.</li>
-<li>נכנסים לעמוד הרישום ובוחרים תאריך ושעה פנויה.</li>
-<li>ממלאים פרטי קשר ומקבלים אישור.</li>
-</ol>
+    <h2>מה תלמדו בשיעורים?</h2>
+    <ul>
+      <li>הבנת החומר בצורה מעמיקה וברורה.</li>
+      <li>תרגול והכנה למבחנים.</li>
+      <li>תמיכה אישית בהתאם לקושי של כל תלמיד.</li>
+    </ul>
 
-<h2>שאלות נפוצות</h2>
-<details>
-<summary>כמה זמן נמשכת הפעילות?</summary>
-<p>כ-45 דקות. ניתן להתאים לפי צורך.</p>
-</details>
-<details>
-<summary>מה להביא?</summary>
-<p>מים, מצב רוח טוב, וכל מסמך שנשלח מראש במייל.</p>
-</details>
+    <h2>הכנה לשיעור</h2>
+    <p>מומלץ להביא את החומר הנלמד, עטים ומחברת. השיעורים נועדו להעמיק ולהסביר את החומר בצורה ברורה ונגישה לכל תלמיד.</p>
 
-<figure class="illustration">
-<img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1400&auto=format&fit=crop" alt="תלמידים לומדים" />
-<figcaption>למידה שיתופית – תמונה להמחשה.</figcaption>
-</figure>
-</article>
+    <figure class="illustration">
+      <img src="img/study_session.jpg" alt="שיעור תגבור">
+      <figcaption>שיעור תגבור בכיתה</figcaption>
+    </figure>
+
+    <h2>צור קשר</h2>
+    <p>לשאלות נוספות או בקשות מיוחדות ניתן לפנות דרך דף הרישום או בדוא"ל: info@example.com</p>
+  </section>
 </main>
 
 <footer class="site-footer">
-<div class="container">
-<span>© 2025 פרויקט לתלמידים</span>
-</div>
+  <div class="container">
+    <span>© 2025 פרויקט לתלמידים</span>
+  </div>
 </footer>
+
+<script src="script.js"></script>
 </body>
 </html>
+
