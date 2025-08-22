@@ -1,0 +1,68 @@
+<!doctype html>
+<a class="logo" href="index.html">פרויקט לתלמידים</a>
+<nav class="nav">
+<a href="index.html">בית</a>
+<a href="info.html">מידע</a>
+<a href="register.html" class="active cta">רישום</a>
+</nav>
+</div>
+</header>
+
+<main class="container">
+<section class="content">
+<h1>רישום לפעילות</h1>
+<p>בחרו תאריך ושעה פנויה, מלאו פרטים ולחצו על "שליחה". אישור יישלח לאחר קליטת הבקשה.</p>
+
+<form id="registration-form" class="card" autocomplete="on">
+<div class="grid-2">
+<label>
+<span>שם מלא</span>
+<input type="text" name="fullName" required placeholder="ישראל ישראלי" />
+</label>
+<label>
+<span>דוא"ל</span>
+<input type="email" name="email" required placeholder="you@example.com" />
+</label>
+<label>
+<span>טלפון</span>
+<input type="tel" name="phone" required placeholder="050-1234567" pattern="[0-9\-\+\s]{7,}" />
+</label>
+<label>
+<span>תאריך</span>
+<input type="date" name="date" id="datePicker" required />
+</label>
+<label>
+<span>שעה</span>
+<select name="time" id="timeSelect" required>
+<option value="" disabled selected>בחר שעה…</option>
+</select>
+</label>
+<label>
+<span>הערות (לא חובה)</span>
+<input type="text" name="notes" placeholder="כל מידע נוסף" />
+</label>
+</div>
+
+<div class="form-actions">
+<button type="submit" class="btn btn-primary">שליחה</button>
+<button type="reset" class="btn" id="resetBtn">איפוס</button>
+</div>
+
+<p id="status" class="status" role="status" aria-live="polite"></p>
+</form>
+
+<aside class="hint">
+<strong>שימו לב:</strong> המערכת בודקת תפוסה ומונעת הזמנת אותו מועד פעמיים.
+</aside>
+</section>
+</main>
+
+<footer class="site-footer">
+<div class="container">
+<span>© 2025 פרויקט לתלמידים</span>
+</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
