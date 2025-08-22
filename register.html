@@ -1,87 +1,71 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>רישום לשיעורים</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>רישום לשיעורים</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Header עם כפתור המבורגר -->
-  <header class="site-header">
-    <div class="container">
-      <a class="logo" href="index.html">פרויקט לתלמידים</a>
-      <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    </div>
-  </header>
-
-  <!-- Sidebar / תפריט צדדי -->
-  <div class="sidebar" id="sidebar">
-    <nav>
-      <a href="index.html">בית</a>
-      <a href="info.html">מידע</a>
-      <a href="register.html" class="active">רישום</a>
-    </nav>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="index.html">פרויקט לתלמידים</a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
   </div>
-  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+</header>
 
-  <!-- תוכן דף הרישום -->
-  <main class="container">
-    <section class="content">
-      <h1>רישום לשיעורי תגבור</h1>
-      <p>בחרו תאריך ושעה פנויה, מלאו את פרטיכם ולחצו על "שליחה". אישור יישלח לאחר קליטת הבקשה.</p>
+<div class="sidebar" id="sidebar">
+  <nav>
+    <a href="index.html">בית</a>
+    <a href="info.html">מידע</a>
+    <a href="register.html" class="active">רישום</a>
+  </nav>
+</div>
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
-      <form id="registration-form" class="card" autocomplete="on">
-        <div class="grid-2">
-          <label>
-            <span>שם מלא</span>
-            <input type="text" name="fullName" required placeholder="ישראל ישראלי" />
-          </label>
-          <label>
-            <span>דוא"ל</span>
-            <input type="email" name="email" required placeholder="you@example.com" />
-          </label>
-          <label>
-            <span>טלפון</span>
-            <input type="tel" name="phone" required placeholder="050-1234567" pattern="[0-9\-\+\s]{7,}" />
-          </label>
-          <label>
-            <span>תאריך</span>
-            <input type="date" name="date" id="datePicker" required />
-          </label>
-          <label>
-            <span>שעה</span>
-            <select name="time" id="timeSelect" required>
-              <option value="" disabled selected>בחר שעה…</option>
-            </select>
-          </label>
-          <label>
-            <span>הערות (לא חובה)</span>
-            <input type="text" name="notes" placeholder="כל מידע נוסף" />
-          </label>
-        </div>
+<main class="container">
+<section class="content">
+  <h1>רישום לשיעורי תגבור</h1>
+  <p>בחרו תאריך ושעה פנויה, מלאו את פרטיכם ולחצו על "שליחה".</p>
 
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">שליחה</button>
-          <button type="reset" class="btn" id="resetBtn">איפוס</button>
-        </div>
-
-        <p id="status" class="status" role="status" aria-live="polite"></p>
-      </form>
-
-      <aside class="hint">
-        <strong>שימו לב:</strong> המערכת בודקת תפוסה ומונעת הזמנת אותו מועד פעמיים.
-      </aside>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <span>© 2025 פרויקט לתלמידים</span>
+  <form id="registration-form" class="card" autocomplete="on">
+    <div class="grid-2">
+      <label>
+        <span>שם מלא</span>
+        <input type="text" name="fullName" required placeholder="ישראל ישראלי" />
+      </label>
+      <label>
+        <span>תאריך</span>
+        <select name="date" id="dateSelect" required>
+          <option value="" disabled selected>בחר תאריך…</option>
+        </select>
+      </label>
+      <label>
+        <span>שעה</span>
+        <select name="time" id="timeSelect" required>
+          <option value="" disabled selected>בחר שעה…</option>
+        </select>
+      </label>
     </div>
-  </footer>
 
-  <script src="script.js"></script>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">שליחה</button>
+      <button type="reset" class="btn">איפוס</button>
+    </div>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </form>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2025 פרויקט לתלמידים</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
+
