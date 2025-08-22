@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>רישום לשיעורים</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>רישום לשיעורים</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header class="site-header">
   <div class="container">
     <a class="logo" href="index.html">פרויקט לתלמידים</a>
@@ -15,48 +14,49 @@
   </div>
 </header>
 
-<div class="sidebar" id="sidebar">
+<div id="sidebar" class="sidebar">
   <nav>
     <a href="index.html">בית</a>
     <a href="info.html">מידע</a>
-    <a href="register.html" class="active">רישום</a>
+    <a href="register.html">רישום</a>
+    <a href="admin.html">מנהל</a>
   </nav>
 </div>
-<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
 <main class="container">
-<section class="content">
-  <h1>רישום לשיעורי תגבור</h1>
-  <p>בחרו תאריך ושעה פנויה, מלאו את פרטיכם ולחצו על "שליחה".</p>
+  <section class="content">
+    <h1>רישום לפעילות תגבור</h1>
+    <p>בחרו תאריך ושעה פנויה והזינו את שמכם.</p>
 
-  <form id="registration-form" class="card" autocomplete="on">
-    <div class="grid-2">
-      <label>
-        <span>שם מלא</span>
-        <input type="text" name="fullName" required placeholder="ישראל ישראלי" />
-      </label>
-      <label>
-        <span>תאריך</span>
-        <select name="date" id="dateSelect" required>
-          <option value="" disabled selected>בחר תאריך…</option>
-        </select>
-      </label>
-      <label>
-        <span>שעה</span>
-        <select name="time" id="timeSelect" required>
-          <option value="" disabled selected>בחר שעה…</option>
-        </select>
-      </label>
-    </div>
+    <form id="registration-form" class="card" autocomplete="on">
+      <div class="grid-2">
+        <label>
+          <span>שם מלא</span>
+          <input type="text" name="fullName" required placeholder="ישראל ישראלי" />
+        </label>
 
-    <div class="form-actions">
-      <button type="submit" class="btn btn-primary">שליחה</button>
-      <button type="reset" class="btn">איפוס</button>
-    </div>
+        <label>
+          <span>תאריך</span>
+          <input type="date" id="datePicker" required>
+        </label>
 
-    <p id="status" class="status" role="status" aria-live="polite"></p>
-  </form>
-</section>
+        <label>
+          <span>שעה</span>
+          <select id="timeSelect" required>
+            <option value="" disabled selected>בחר שעה…</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">שליחה</button>
+        <button type="reset" class="btn">איפוס</button>
+      </div>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </form>
+  </section>
 </main>
 
 <footer class="site-footer">
@@ -66,6 +66,65 @@
 </footer>
 
 <script src="script.js"></script>
+<script>
+  // טעינת זמינות לדף רישום
+  const datePicker = document.getElementById("datePicker");
+  const timeSelect = document.getElementById("timeSelect");
+  let registrations = JSON.parse(localStorage.getItem("registrations")||"[]");
+  let availability = JSON.parse(localStorage.getItem("availability")||"{}");
+
+  function loadAvailableDates() {
+    datePicker.value = "";
+    datePicker.min = "";
+    datePicker.max = "";
+    const dates = Object.keys(availability).sort();
+    if(dates.length>0){
+      datePicker.min = dates[0];
+      datePicker.max = dates[dates.length-1];
+    }
+    datePicker.oninput = () => {
+      const selected = datePicker.value;
+      timeSelect.innerHTML = "<option value='' disabled selected>בחר שעה…</option>";
+      if(selected && availability[selected]){
+        availability[selected].forEach(time => {
+          const taken = registrations.some(r => r.date===selected && r.time===time);
+          if(!taken){
+            const opt = document.createElement("option");
+            opt.value = time;
+            opt.textContent = time;
+            timeSelect.appendChild(opt);
+          }
+        });
+      }
+    };
+  }
+
+  loadAvailableDates();
+
+  const regForm = document.getElementById("registration-form");
+  regForm.addEventListener("submit", e=>{
+    e.preventDefault();
+    const fullName = regForm.fullName.value.trim();
+    const date = datePicker.value;
+    const time = timeSelect.value;
+    if(!fullName || !date || !time) return;
+
+    // בדיקת כפילות
+    const duplicate = registrations.some(r=>r.date===date && r.time===time);
+    if(duplicate){
+      document.getElementById("status").textContent = "המועד כבר תפוס!";
+      return;
+    }
+
+    registrations.push({fullName,date,time,status:"ממתין"});
+    localStorage.setItem("registrations",JSON.stringify(registrations));
+    document.getElementById("status").textContent = "בקשת הרישום נרשמה במערכת";
+    regForm.reset();
+    loadAvailableDates();
+  });
+</script>
 </body>
 </html>
+
+
 
