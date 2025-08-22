@@ -1,107 +1,47 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>רישום לתגבורים 2026</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      background-color: #004080;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 15px;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .homepage-header {
-      background: url('תמונה-אתר.jpeg') no-repeat center center;
-      background-size: cover;
-      height: 50vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: #001f3f; /* שחור-כחול */
-      text-shadow: 1px 1px 3px rgba(255,255,255,0.6);
-      position: relative;
-      text-align: center;
-    }
-
-    .homepage-header h1 {
-      position: relative;
-      font-size: 2.5em;
-      font-weight: bold;
-      margin: 0 15px;
-    }
-
-    .header-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logo-lg {
-      height: 80px;
-    }
-
-    .hamburger {
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 2em;
-      cursor: pointer;
-      color: white;
-      text-shadow: 1px 1px 4px black;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>רישום לתגבורים שנת 2026 מחצית א</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header class="site-header">
+  <div class="header-container">
+    <img src="logo.img" alt="לוגו שמאל" class="logo-lg">
+    <h1>רישום לתגבורים שנת 2026 מחצית א</h1>
+    <img src="logo.img" alt="לוגו ימין" class="logo-lg">
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+</header>
 
-  <header>
-    <div>בית הספר שלי</div>
-    <nav>
-      <ul>
-        <li><a href="#">דף הבית</a></li>
-        <li><a href="#">אודות</a></li>
-        <li><a href="#">צור קשר</a></li>
-      </ul>
-    </nav>
-  </header>
+<div id="sidebar" class="sidebar">
+  <nav>
+    <a href="index.html">בית</a>
+    <a href="info.html">מידע</a>
+    <a href="register.html">רישום</a>
+    <a href="admin.html">מנהל</a>
+  </nav>
+</div>
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-  <section class="homepage-header">
-    <div class="header-container">
-      <img src="img/logo.img" alt="לוגו שמאל" class="logo-lg">
-      <h1>רישום לתגבורים שנת 2026 מחצית א</h1>
-      <img src="img/logo.img" alt="לוגו ימין" class="logo-lg">
+<main class="container">
+  <section class="hero">
+    <div class="features-grid">
+      <div class="feature-card">פעילות 1</div>
+      <div class="feature-card">פעילות 2</div>
+      <div class="feature-card">פעילות 3</div>
     </div>
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
   </section>
+</main>
 
-  <script>
-    function toggleMenu() {
-      alert("תפריט נפתח (כאן אפשר להוסיף קוד אמיתי)");
-    }
-  </script>
+<footer class="site-footer">
+  <div class="container">
+    <span>© 2025 פרויקט לתלמידים</span>
+  </div>
+</footer>
 
+<script src="script.js"></script>
 </body>
 </html>
