@@ -22,8 +22,8 @@ body{
 }
 .container{width:min(1100px,92%); margin-inline:auto}
 .site-header{position:sticky; top:0; background:rgba(15,23,42,.7); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--border); z-index:10}
-.site-header .container{display:flex; align-items:center; justify-content:center; padding:12px 0}
-.logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px}
+.site-header .container{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
+.logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px; flex-grow:1; text-align:center;}
 
 /* שינויים שהוספתי לעיצוב הקיים */
 .btn, .nav a, .feature-card, input, select {
@@ -116,7 +116,7 @@ input:focus, select:focus{box-shadow:0 0 0 4px var(--ring)}
   justify-content: center;
   background: transparent;
   border: none;
-  color: var(--text);
+  color: #fff;
   cursor: pointer;
   padding: 0.5rem;
   z-index: 101;
