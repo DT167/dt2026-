@@ -1,48 +1,41 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>רישום לתגבורים שנת 2026 מחצית א</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>דף הבית</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="site-header">
-  <div class="header-container">
-    <img src="logo.img" alt="לוגו שמאל" class="logo-lg">
-    <h1>רישום לתגבורים שנת 2026 מחצית א</h1>
-    <img src="logo.img" alt="לוגו ימין" class="logo-lg">
-  </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-</header>
-
-<div id="sidebar" class="sidebar">
-  <nav>
-    <a href="index.html">בית</a>
-    <a href="info.html">מידע</a>
-    <a href="register.html">רישום</a>
-    <a href="admin.html">מנהל</a>
-  </nav>
-</div>
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-
-<main class="container">
-  <section class="hero">
-    <div class="features-grid">
-      <div class="feature-card">פעילות 1</div>
-      <div class="feature-card">פעילות 2</div>
-      <div class="feature-card">פעילות 3</div>
+  <!-- כותרת עם סמל שמחזיר לדף הבית -->
+  <header>
+    <div class="logo-container">
+      <a href="index.html"><img src="logo.png" alt="סמל" class="logo"></a>
     </div>
-  </section>
-</main>
+    <nav class="hamburger-menu">
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="menu-icon">&#9776;</label>
+      <ul class="menu">
+        <li><a href="index.html">דף הבית</a></li>
+        <li><a href="register.html">רישום</a></li>
+        <li><a href="about.html">אודות</a></li>
+        <li><a href="contact.html">צור קשר</a></li>
+        <li><a href="admin.html">ניהול</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<footer class="site-footer">
-  <div class="container">
-    <span>© 2025 פרויקט לתלמידים</span>
-  </div>
-</footer>
+  <main>
+    <!-- חלק עליון עם תמונה -->
+    <section class="hero"></section>
 
-<script src="script.js"></script>
+    <!-- חלק תחתון עם צבעים מתחלפים -->
+    <section class="colorful-section">
+      <h1>ברוכים הבאים לפרויקט התלמידים</h1>
+      <p>כאן תוכלו להתרשם מהפעילות שלנו</p>
+    </section>
+  </main>
 </body>
 </html>
+
 
