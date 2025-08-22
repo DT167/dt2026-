@@ -61,7 +61,7 @@ if(document.getElementById("registration-form")) {
 // Admin Page Code
 // --------------------
 if(document.getElementById("loginBtn")) {
-  const correctPassword = "admin123"; // שנה לפי הצורך
+  const correctPassword = "AD025429"; // שנה לפי הצורך
   const loginBtn = document.getElementById("loginBtn");
   const adminPanel = document.getElementById("adminPanel");
 
