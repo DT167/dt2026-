@@ -95,23 +95,8 @@ body {
   color: #fff; /* טקסט בהיר על רקע כהה */
   padding-top: 120px; /* כדי לפנות מקום לסמל */
 }
-.hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 400px; /* גובה אזור המטוסים */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent); /* שכבת צבע כהה מלמעלה לשקיפות */
-  z-index: -1;
-}
-.hero .container {
-  position: relative;
-  z-index: 1; /* כדי שהטקסט יהיה מעל הרקע */
-}
-
-.hero h1{font-size:clamp(28px,5vw,42px); margin:0 0 10px}
-.hero p{color:#f0f0f0; margin:0 0 24px}
+.hero h1{font-size:clamp(28px,5vw,42px); margin:0 0 10px; color: #000;}
+.hero p{color: #000; margin:0 0 24px;}
 .hero-actions{display:flex; gap:12px; justify-content:center}
 
 .features-grid{
