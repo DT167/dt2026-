@@ -1,73 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>בית | פרויקט לתלמידים</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
-  
-  <meta property="og:title" content="רישום לתגבורים, שנת 2026 T" />
-  <meta property="og:description" content="הצטרפו אלינו לתגבורים מעניינים! כאן תוכלו להירשם בקלות ולשריין מקום." />
-  <meta property="og:image" content="https://dt2026.github.io/dt2026-/img/social-preview.png" />
-  <meta property="og:url" content="https://dt2026.vercel.app/" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>האתר שלי</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #333;
+      color: white;
+      padding: 10px 20px;
+      position: relative;
+    }
+    header img {
+      height: 40px;
+    }
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+    /* כפתור המבורגר */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .hamburger span {
+      height: 3px;
+      width: 25px;
+      background: white;
+      margin: 4px 0;
+    }
+    /* תפריט בנייד */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+        flex-direction: column;
+        background: #444;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+      }
+      nav.active {
+        display: flex;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+  </style>
 </head>
 <body>
-  
-  <header class="site-header">
-    <div class="container header-content">
-      <a class="logo" href="index.html"></a>
-      <h1>רישום לתגבורים שנת תשפ"ו מחצית א'</h1>
-      <button class="menu-toggle" id="menu-toggle">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
-      </button>
-    </div>
-  </header>
+  <header>
+    <!-- לוגו בצד ימין -->
+    <img src="logo.img" alt="לוגו ימין">
+    
+    <!-- תפריט -->
+    <nav id="menu">
+      <a href="#">דף הבית</a>
+      <a href="#">מי אנחנו</a>
+      <a href="#">שירותים</a>
+      <a href="#">צור קשר</a>
+    </nav>
+    
+    <!-- כפתור המבורגר -->
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
+    <!-- לוגו בצד שמאל -->
+    <img src="logo.img" alt="לוגו שמאל">
+  </header>
 
-  <div class="sidebar" id="sidebar">
-    <nav>
-      <a href="index.html">דף הבית</a>
-      <a href="register.html">רישום לשיעור</a>
-      <a href="info.html">מידע עלינו</a>
-    </nav>
-  </div>
-  <div class="overlay" id="overlay"></div>
-
-  <main class="container">
-    <section class="hero">
-      <h1>ברוכים הבאים לפרויקט</h1>
-      <p>אתר מידע ופעילות לתלמידים. כאן תוכלו לקרוא על הפעילות ולשריין מועד נוח.</p>
-      <div class="hero-actions">
-        <a class="btn" href="info.html">למד עוד</a>
-        <a class="btn btn-primary" href="register.html">עבור לרישום</a>
-      </div>
-    </section>
-
-    <section class="features-grid">
-      <article class="feature-card">
-        <h3>תוכן ברור</h3>
-        <p>הסברים קצרים, תמונות ותרשימים – מותאם לתלמידים.</p>
-      </article>
-      <article class="feature-card">
-        <h3>רישום מהיר</h3>
-        <p>בחרו תאריך ושעה פנויה ושלחו פרטים – וזהו.</p>
-      </article>
-      <article class="feature-card">
-        <h3>זמינות אונליין</h3>
-        <p>האתר פועל במחשב ובנייד, בכל זמן ומקום.</p>
-      </article>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <span>© 2025 פרויקט לתלמידים</span>
-    </div>
-  </footer>
-  <script src="script.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('active');
+    }
+  </script>
 </body>
 </html>
+
