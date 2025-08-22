@@ -9,17 +9,63 @@
   --border:#1f2937;       /* gray-800 */
 }
 *{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0; font-family:Heebo,system-ui,Arial;
-  background-color: #ffffff; /* צבע רקע לבן */
-  color: var(--text);
+html,body{height:100%; margin:0; font-family:Heebo,system-ui,Arial; color:var(--text);}
+
+body {
+  background-color: #ffffff; /* צבע רקע לבן כברירת מחדל */
 }
 
 .container{width:min(1100px,92%); margin-inline:auto}
-.site-header{position:sticky; top:0; background:rgba(15,23,42,.7); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--border); z-index:10}
-.site-header .container{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
-.logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px}
+
+.site-header{
+  position:sticky; top:0;
+  background:rgba(15,23,42,.7);
+  backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid var(--border);
+  z-index:10;
+}
+.site-header .container{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 0;
+}
+.logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px; margin:0 auto;}
+
+/* מיקום הסמלים */
+.site-header .container::before,
+.site-header .container::after {
+  content: '';
+  position: absolute;
+  top: 5px; /* התאמה אנכית */
+  height: 50px; /* גובה הסמל */
+  width: 50px; /* רוחב הסמל */
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.site-header .container::before {
+  left: 10px;
+  background-image: url('http://googleusercontent.com/file_content/1');
+}
+
+.site-header .container::after {
+  right: 10px;
+  background-image: url('http://googleusercontent.com/file_content/1');
+}
+
+/* הסתרת אלמנטים אם אין מקום לסמלים */
+@media (max-width: 600px) {
+  .site-header .container::before,
+  .site-header .container::after {
+    display: none;
+  }
+  .logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 /* שינויים שהוספתי לעיצוב הקיים */
 .btn, .nav a, .feature-card, input, select {
@@ -30,17 +76,61 @@ body{
     box-shadow: 0 8px 12px rgba(0,0,0,0.25);
 }
 
-.hero{padding:64px 0; text-align:center}
+.hero{
+  padding:64px 0;
+  text-align:center;
+  background-image: url('http://googleusercontent.com/file_content/2');
+  background-size: cover;
+  background-position: center;
+  color: #fff; /* טקסט בהיר על רקע כהה */
+  padding-top: 120px; /* כדי לפנות מקום לסמל */
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 400px; /* גובה אזור המטוסים */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent); /* שכבת צבע כהה מלמעלה לשקיפות */
+  z-index: -1;
+}
+.hero .container {
+  position: relative;
+  z-index: 1; /* כדי שהטקסט יהיה מעל הרקע */
+}
+
 .hero h1{font-size:clamp(28px,5vw,42px); margin:0 0 10px}
-.hero p{color:var(--muted); margin:0 0 24px}
+.hero p{color:#f0f0f0; margin:0 0 24px}
 .hero-actions{display:flex; gap:12px; justify-content:center}
+
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px;
+  padding:24px 0 64px;
+  background-image: url('http://googleusercontent.com/file_content/0');
+  background-size: cover;
+  background-position: center;
+  color: var(--text); /* החזרת צבע טקסט רגיל */
+  padding-bottom: 100px; /* כדי שהרקע יכסה גם את החלק התחתון */
+}
+.features-grid::before {
+  content: "";
+  position: absolute;
+  top: 400px; /* מתחת לאזור המטוסים */
+  left: 0;
+  width: 100%;
+  height: 400px; /* גובה אזור הטכנולוגיה */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent); /* שכבת צבע כהה מלמטה לשקיפות */
+  z-index: -1;
+}
+.features-grid .feature-card{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:18px; box-shadow:0 10px 25px rgba(0,0,0,.25)}
+
 .btn{display:inline-block; padding:10px 16px; border-radius:14px; background:#0b1222; color:var(--text); text-decoration:none; border:1px solid var(--border); cursor:pointer; box-shadow:0 4px 6px rgba(0,0,0,0.1)}
 .btn:hover{background:#0d1425}
 .btn-primary{background:var(--primary); color:#052e16; border-color:transparent}
 .btn-primary:hover{background:var(--primary-600)}
-
-.features-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; padding:24px 0 64px}
-.feature-card{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:18px; box-shadow:0 10px 25px rgba(0,0,0,.25)}
 
 .content{padding:32px 0}
 .content h1{margin-top:0}
@@ -56,7 +146,7 @@ input:focus, select:focus{box-shadow:0 0 0 4px var(--ring)}
 .status{min-height:24px; margin-top:10px; color:var(--muted)}
 .hint{margin-top:14px; color:var(--muted)}
 .site-footer{border-top:1px solid var(--border); margin-top:40px}
-.site-footer .container{padding:16px 0; font-size:14px; color:var(--muted)}
+.site-footer .container{padding:16px 0; font-size:14px; color:var(--muted); text-align: center;}
 
 /* קוד חדש לתפריט הצדדי */
 .sidebar {
@@ -112,7 +202,7 @@ input:focus, select:focus{box-shadow:0 0 0 4px var(--ring)}
   justify-content: center;
   background: transparent;
   border: none;
-  color: var(--text);
+  color: #fff;
   cursor: pointer;
   padding: 0.5rem;
   z-index: 101;
