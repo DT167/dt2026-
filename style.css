@@ -11,11 +11,18 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0; font-family:Heebo,system-ui,Arial; background:var(--bg); color:var(--text);
+  margin:0; font-family:Heebo,system-ui,Arial;
+  background-image: url('https://images.unsplash.com/photo-1635375887335-f985c5a599d9?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixid=MnwxfDB8MXxyYW5kb218MHx8dGVjaG5vbG9neSxhaXJjcmFmdHxlbnwwfHx8fDE2OTYwNDI4OTY&ixlib=rb-4.0.3&q=80&w=1920'); /* החלף קישור זה בתמונה אחרת */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-color: #0f172a;
+  color: var(--text);
 }
 .container{width:min(1100px,92%); margin-inline:auto}
 .site-header{position:sticky; top:0; background:rgba(15,23,42,.7); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--border); z-index:10}
-.site-header .container{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
+.site-header .container{display:flex; align-items:center; justify-content:center; padding:12px 0}
 .logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px}
 
 /* שינויים שהוספתי לעיצוב הקיים */
