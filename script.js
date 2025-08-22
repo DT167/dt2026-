@@ -127,6 +127,21 @@ function initForm(){
   });
 }
 
+// קוד חדש לתפריט הצדדי
+const menuToggle = document.getElementById('menu-toggle');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
+function toggleSidebar() {
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+if(menuToggle && sidebar && overlay){
+  menuToggle.addEventListener('click', toggleSidebar);
+  overlay.addEventListener('click', toggleSidebar);
+}
+
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', initForm);
 }else{
