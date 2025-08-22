@@ -1,116 +1,152 @@
-/* עיצוב כללי */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  direction: rtl;
-  background: linear-gradient(to bottom, #fdfdfd, #e3f2fd);
-  color: #333;
+  font-family: Calibri, Arial, sans-serif;
 }
 
-/* כותרת עליונה */
-.site-header {
-  position: relative;
-  text-align: center;
-  background: url("אתר-תמונה.jpeg") no-repeat center center/cover;
+/* חלק עליון עם רקע התמונה */
+.homepage-header {
+  background: url('אתר-תמונה.jpeg') no-repeat center center/cover;
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   color: white;
-  padding: 40px 20px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  position: relative;
 }
 
-.site-header h1 {
-  font-size: 2em;
-  margin: 0;
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+/* הכותרת והלוגואים */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .logo-lg {
-  height: 60px;
-  width: auto;
-  margin: 0 15px;
+  width: 120px;
+  height: auto;
 }
 
-/* תפריט צד */
+h1 {
+  text-align: center;
+  margin: 10px 0;
+  font-size: 2em;
+}
+
+/* המבורגר */
+.hamburger {
+  font-size: 2em;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* תפריט צדדי */
 .sidebar {
   position: fixed;
   top: 0;
   right: -250px;
   width: 250px;
   height: 100%;
-  background: #1e3c72;
-  background: linear-gradient(to bottom, #2a5298, #1e3c72);
-  transition: right 0.3s ease;
-  padding-top: 80px;
-  z-index: 1000;
+  background: #f8f8f8;
+  border-left: 1px solid #e0e0e0;
+  padding-top: 60px;
+  transition: right 0.3s ease-in-out;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.active {
+  right: 0;
 }
 
 .sidebar nav a {
-  display: block;
-  padding: 15px;
+  padding: 0.75rem 1rem;
   text-decoration: none;
-  color: white;
-  font-weight: bold;
+  color: #000;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
 
 .sidebar nav a:hover {
-  background: rgba(255,255,255,0.1);
+  background-color: #f0f0f0;
 }
 
-.menu-toggle {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  cursor: pointer;
-  font-size: 18px;
-}
-
-/* Overlay */
+/* overlay */
 .overlay {
-  display: none;
   position: fixed;
-  top: 0; right: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 900;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 99;
 }
 
-/* חלק עיקרי */
-.container {
-  padding: 40px 20px;
-  background: linear-gradient(to bottom, #ffffff, #e3f2fd, #bbdefb);
+.overlay.active {
+  display: block;
 }
 
-/* כרטיסי תכנים */
-.features-grid {
+/* חלק תחתון צבעוני */
+.homepage-footer {
+  height: 50vh;
+  background: linear-gradient(270deg, #ff6ec7, #845ec2, #0081cf, #00c9a7, #f9f871);
+  background-size: 1000% 1000%;
+  animation: gradientShift 20s ease infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ריבועים בצורת משולש הפוך */
+.triangle-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  margin-top: 20px;
+  justify-items: center;
+  align-items: center;
+  max-width: 600px;
 }
 
-.feature-card {
+.triangle-grid div:nth-child(1) { grid-column: 2; }
+.triangle-grid div:nth-child(2),
+.triangle-grid div:nth-child(3) { grid-column: span 1; }
+
+.content-box {
+  width: 140px;
+  height: 140px;
   background: white;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  text-align: center;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
-  transition: transform 0.2s;
+  transition: transform 0.3s;
 }
 
-.feature-card:hover {
-  transform: scale(1.05);
+.content-box:hover {
+  transform: scale(1.1);
 }
 
-/* פוטר */
-.site-footer {
-  text-align: center;
-  padding: 20px;
-  background: linear-gradient(to right, #2a5298, #1e3c72);
+/* Footer */
+footer.site-footer {
+  background: #333;
   color: white;
-  margin-top: 40px;
+  text-align: center;
+  padding: 15px;
 }
+
 
 
