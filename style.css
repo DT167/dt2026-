@@ -11,17 +11,17 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0; font-family:Heebo,system-ui,Arial;
-  background-color: #ffffff;
-  color: #000000;
+  margin:0; font-family:Heebo,system-ui,Arial;
+  background-color: #ffffff;
+  color: #000000;
 }
 .container{width:min(1100px,92%); margin-inline:auto}
 .site-header{position:sticky; top:0; background:rgba(255,255,255,0.7); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid #e0e0e0; z-index:10; text-align:center;}
 .site-header h1 {
-  color: #0f172a;
-  text-align: center;
-  margin: 0;
-  padding-top: 10px;
+  color: #0f172a;
+  text-align: center;
+  margin: 0;
+  padding-top: 10px;
 }
 .site-header .container{display:flex; align-items:center; justify-content:center; padding:10px 0}
 .logo{display: none;}
@@ -29,43 +29,43 @@ body{
 /* מיקום הסמלים */
 .site-header .container::before,
 .site-header .container::after {
-  content: '';
-  position: absolute;
-  top: 5px; /* התאמה אנכית */
-  height: 50px; /* גובה הסמל */
-  width: 50px; /* רוחב הסמל */
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url('img/logo.png');
+  content: '';
+  position: absolute;
+  top: 5px; /* התאמה אנכית */
+  height: 50px; /* גובה הסמל */
+  width: 50px; /* רוחב הסמל */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('img/logo.img'); /* הנתיב המתוקן */
 }
 
 .site-header .container::before {
-  left: 10px;
+  left: 10px;
 }
 
 .site-header .container::after {
-  right: 10px;
+  right: 10px;
 }
 
 /* הסתרת אלמנטים אם אין מקום לסמלים */
 @media (max-width: 600px) {
-  .site-header .container::before,
-  .site-header .container::after {
-    display: none;
-  }
-  .logo {
-    margin-left: auto;
-    margin-right: auto;
-  }
+  .site-header .container::before,
+  .site-header .container::after {
+    display: none;
+  }
+  .logo {
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 /* שינויים שהוספתי לעיצוב הקיים */
 .btn, .nav a, .feature-card, input, select {
-  transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 .btn:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 8px 12px rgba(0,0,0,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.25);
 }
 
 .hero{padding:64px 0; text-align:center}
@@ -98,64 +98,64 @@ input:focus, select:focus{box-shadow:0 0 0 4px #22c55e33}
 
 /* קוד חדש לתפריט הצדדי */
 .sidebar {
-  position: fixed;
-  top: 0;
-  right: -250px;
-  width: 250px;
-  height: 100%;
-  background: #f8f8f8;
-  border-left: 1px solid #e0e0e0;
-  padding-top: 60px;
-  transition: right 0.3s ease-in-out;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background: #f8f8f8;
+  border-left: 1px solid #e0e0e0;
+  padding-top: 60px;
+  transition: right 0.3s ease-in-out;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
 }
 .sidebar.active {
-  right: 0;
+  right: 0;
 }
 .sidebar nav {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
 }
 .sidebar a {
-  padding: 0.75rem 1rem;
-  text-decoration: none;
-  color: #000;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #000;
+  border-radius: 8px;
+  transition: background-color 0.2s;
 }
 .sidebar a:hover {
-  background-color: #f0f0f0;
+  background-color: #f0f0f0;
 }
 
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  z-index: 99;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 99;
 }
 .overlay.active {
-  display: block;
+  display: block;
 }
 
 .menu-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: none;
-  color: #000;
-  cursor: pointer;
-  padding: 0.5rem;
-  z-index: 101;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 101;
 }
 .menu-toggle svg {
-  width: 24px;
-  height: 24px;
+  width: 24px;
+  height: 24px;
 }
