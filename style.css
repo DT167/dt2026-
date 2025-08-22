@@ -55,26 +55,66 @@ input:focus, select:focus{box-shadow:0 0 0 4px var(--ring)}
 .site-footer{border-top:1px solid var(--border); margin-top:40px}
 .site-footer .container{padding:16px 0; font-size:14px; color:var(--muted)}
 
-/* קוד חדש להודעת "בשיפוץ" */
-.coming-soon {
+/* קוד חדש לתפריט הצדדי */
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -250px;
+  width: 250px;
+  height: 100%;
+  background: var(--card);
+  border-left: 1px solid var(--border);
+  padding-top: 60px;
+  transition: right 0.3s ease-in-out;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar.active {
+  right: 0;
+}
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.sidebar a {
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: var(--text);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+.sidebar a:hover {
+  background-color: var(--border);
+}
+
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 99;
+}
+.overlay.active {
+  display: block;
+}
+
+.menu-toggle {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  background: var(--bg);
-  z-index: 9999;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 101;
 }
-.coming-soon h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  margin-bottom: 1rem;
-}
-.coming-soon p {
-  color: var(--muted);
-  font-size: clamp(1rem, 2vw, 1.2rem);
+.menu-toggle svg {
+  width: 24px;
+  height: 24px;
 }
