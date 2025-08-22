@@ -1,68 +1,80 @@
-<!doctype html>
-<a class="logo" href="index.html">פרויקט לתלמידים</a>
-<nav class="nav">
-<a href="index.html">בית</a>
-<a href="info.html">מידע</a>
-<a href="register.html" class="active cta">רישום</a>
-</nav>
-</div>
-</header>
+:root{
+  --bg:#0f172a;           /* slate-900 */
+  --card:#111827;         /* gray-900 */
+  --muted:#94a3b8;        /* slate-400 */
+  --text:#e5e7eb;         /* gray-200 */
+  --primary:#22c55e;      /* green-500 */
+  --primary-600:#16a34a;  /* green-600 */
+  --ring:#10b98133;       /* green ring */
+  --border:#1f2937;       /* gray-800 */
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:Heebo,system-ui,Arial; background:var(--bg); color:var(--text);
+}
+.container{width:min(1100px,92%); margin-inline:auto}
+.site-header{position:sticky; top:0; background:rgba(15,23,42,.7); backdrop-filter:saturate(140%) blur(8px); border-bottom:1px solid var(--border); z-index:10}
+.site-header .container{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
+.logo{color:#fff; text-decoration:none; font-weight:800; letter-spacing:.5px}
 
-<main class="container">
-<section class="content">
-<h1>רישום לפעילות</h1>
-<p>בחרו תאריך ושעה פנויה, מלאו פרטים ולחצו על "שליחה". אישור יישלח לאחר קליטת הבקשה.</p>
+/* שינויים שהוספתי לעיצוב הקיים */
+.btn, .nav a, .feature-card, input, select {
+  transition: all 0.3s ease;
+}
+.btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 8px 12px rgba(0,0,0,0.25);
+}
 
-<form id="registration-form" class="card" autocomplete="on">
-<div class="grid-2">
-<label>
-<span>שם מלא</span>
-<input type="text" name="fullName" required placeholder="ישראל ישראלי" />
-</label>
-<label>
-<span>דוא"ל</span>
-<input type="email" name="email" required placeholder="you@example.com" />
-</label>
-<label>
-<span>טלפון</span>
-<input type="tel" name="phone" required placeholder="050-1234567" pattern="[0-9\-\+\s]{7,}" />
-</label>
-<label>
-<span>תאריך</span>
-<input type="date" name="date" id="datePicker" required />
-</label>
-<label>
-<span>שעה</span>
-<select name="time" id="timeSelect" required>
-<option value="" disabled selected>בחר שעה…</option>
-</select>
-</label>
-<label>
-<span>הערות (לא חובה)</span>
-<input type="text" name="notes" placeholder="כל מידע נוסף" />
-</label>
-</div>
+.hero{padding:64px 0; text-align:center}
+.hero h1{font-size:clamp(28px,5vw,42px); margin:0 0 10px}
+.hero p{color:var(--muted); margin:0 0 24px}
+.hero-actions{display:flex; gap:12px; justify-content:center}
+.btn{display:inline-block; padding:10px 16px; border-radius:14px; background:#0b1222; color:var(--text); text-decoration:none; border:1px solid var(--border); cursor:pointer; box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+.btn:hover{background:#0d1425}
+.btn-primary{background:var(--primary); color:#052e16; border-color:transparent}
+.btn-primary:hover{background:var(--primary-600)}
 
-<div class="form-actions">
-<button type="submit" class="btn btn-primary">שליחה</button>
-<button type="reset" class="btn" id="resetBtn">איפוס</button>
-</div>
+.features-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; padding:24px 0 64px}
+.feature-card{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:18px; box-shadow:0 10px 25px rgba(0,0,0,.25)}
 
-<p id="status" class="status" role="status" aria-live="polite"></p>
-</form>
+.content{padding:32px 0}
+.content h1{margin-top:0}
+.illustration img{width:100%; border-radius:18px; border:1px solid var(--border)}
+.illustration figcaption{color:var(--muted); font-size:14px; margin-top:6px}
 
-<aside class="hint">
-<strong>שימו לב:</strong> המערכת בודקת תפוסה ומונעת הזמנת אותו מועד פעמיים.
-</aside>
-</section>
-</main>
+.card{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:18px; box-shadow:0 10px 25px rgba(0,0,0,.25)}
+.grid-2{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px}
+label{display:flex; flex-direction:column; gap:6px}
+input, select{width:100%; padding:10px 12px; border-radius:12px; border:1px solid var(--border); background:#0b1222; color:var(--text); outline:none}
+input:focus, select:focus{box-shadow:0 0 0 4px var(--ring)}
+.form-actions{display:flex; gap:12px; margin-top:12px}
+.status{min-height:24px; margin-top:10px; color:var(--muted)}
+.hint{margin-top:14px; color:var(--muted)}
+.site-footer{border-top:1px solid var(--border); margin-top:40px}
+.site-footer .container{padding:16px 0; font-size:14px; color:var(--muted)}
 
-<footer class="site-footer">
-<div class="container">
-<span>© 2025 פרויקט לתלמידים</span>
-</div>
-</footer>
-
-<script src="script.js"></script>
-</body>
-</html>
+/* קוד חדש להודעת "בשיפוץ" */
+.coming-soon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg);
+  z-index: 9999;
+}
+.coming-soon h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 1rem;
+}
+.coming-soon p {
+  color: var(--muted);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
