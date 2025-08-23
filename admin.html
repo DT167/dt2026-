@@ -15,14 +15,26 @@
     <h1>🔑 ניהול נרשמים</h1>
   </div>
 
-  <!-- טופס סיסמה -->
   <div id="loginArea">
     <input type="password" id="pass" placeholder="הכנס סיסמה">
     <button onclick="checkPass()">כניסה</button>
   </div>
 
-  <!-- אזור מנהל -->
-  <div id="adminArea">
+  <div id="adminArea" style="display:none;">
+    <h2>הוספת תאריכים ושעות זמינים</h2>
+    <div id="addTimesForm">
+      <input type="date" id="newDate">
+      <input type="time" id="newTime">
+      <button onclick="addTimeSlot()">הוסף</button>
+    </div>
+    <div id="availableTimes">
+      <h3>רשימת תאריכים ושעות זמינים:</h3>
+      <ul id="timesList"></ul>
+    </div>
+    
+    <hr>
+    
+    <h2>רשימת נרשמים</h2>
     <table id="regTable">
       <tr><th>שם</th><th>אימייל</th><th>שיעור</th><th>תאריך</th><th>שעה</th><th>סטטוס</th><th>פעולות</th></tr>
     </table>
@@ -34,4 +46,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
