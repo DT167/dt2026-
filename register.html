@@ -7,31 +7,40 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="hamburger" id="hamburgerMenu">☰</div>
+<nav class="navMenu" id="navMenu">
+  <ul>
+    <li><a href="index.html">🏠 בית</a></li>
+    <li><a href="register.html">📚 רישום</a></li>
+    <li><a href="admin.html">🔑 מנהלים</a></li>
+    <li><a href="info.html">ℹ️ מידע</a></li>
+  </ul>
+</nav>
+
 <div class="hero register" id="hero">
-  <div class="header">
-    <img src="logo-left.png" class="logo left">
-    <img src="logo-center.png" class="logo center">
-    <img src="logo-right.png" class="logo right">
-    <h1>📚 הרשמה לשיעורים</h1>
-  </div>
+  <div class="header">
+    <img src="logo-left.png" class="logo left">
+    <img src="logo-center.png" class="logo center">
+    <img src="logo-right.png" class="logo right">
+    <h1>📚 הרשמה לשיעורים</h1>
+  </div>
 
-  <form id="registerForm">
-        <select id="lesson" required>
-      <option value="">-- בחר שיעור --</option>
-    </select><br>
+  <form id="registerForm">
+        <select id="lesson" required>
+      <option value="">-- בחר שיעור --</option>
+    </select><br>
 
-    <label for="date">בחר תאריך:</label>
-    <input type="date" id="date" required><br>
+    <label for="date">בחר תאריך:</label>
+    <input type="date" id="date" required><br>
 
-    <label for="time">בחר שעה:</label>
-    <select id="time" required>
-      <option value="">-- בחר שעה --</option>
-    </select><br>
+    <label for="time">בחר שעה:</label>
+    <select id="time" required>
+      <option value="">-- בחר שעה --</option>
+    </select><br>
 
-    <input type="text" id="name" placeholder="שם מלא" required><br>
-    <button type="submit">הרשמה</button>
-  </form>
-  <p><a href="index.html" style="color:#fff;">⬅️ חזרה לעמוד הבית</a></p>
+    <input type="text" id="name" placeholder="שם מלא" required><br>
+    <button type="submit">הרשמה</button>
+  </form>
 </div>
 
 <script src="script.js"></script>
