@@ -7,57 +7,62 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="hamburger" id="hamburgerMenu">☰</div>
+<nav class="navMenu" id="navMenu">
+  <ul>
+    <li><a href="index.html">🏠 בית</a></li>
+    <li><a href="register.html">📚 רישום</a></li>
+    <li><a href="admin.html">🔑 מנהלים</a></li>
+    <li><a href="info.html">ℹ️ מידע</a></li>
+  </ul>
+</nav>
+
 <div class="hero admin" id="hero">
-  <div class="header">
-    <img src="logo-left.png" class="logo left">
-    <img src="logo-center.png" class="logo center">
-    <img src="logo-right.png" class="logo right">
-    <h1>🔑 ניהול נרשמים</h1>
-  </div>
+  <div class="header">
+    <img src="logo-left.png" class="logo left">
+    <img src="logo-center.png" class="logo center">
+    <img src="logo-right.png" class="logo right">
+    <h1>🔑 ניהול נרשמים</h1>
+  </div>
 
-    <div id="loginArea">
-    <input type="password" id="pass" placeholder="הכנס סיסמה">
-    <button onclick="checkPass()">כניסה</button>
-  </div>
+  <div id="loginArea">
+    <input type="password" id="pass" placeholder="הכנס סיסמה">
+    <button onclick="checkPass()">כניסה</button>
+  </div>
 
-    <div id="adminArea" style="display:none;">
-    <button onclick="logout()" style="position:absolute; top:20px; left:20px;">התנתקות</button>
-    <div id="adminHeaderInfo" style="margin-bottom: 20px;"></div>
-
-    <h2>ניהול שיעורים</h2>
-    <div id="addLessonForm">
-      <input type="text" id="newLesson" placeholder="שם שיעור חדש">
-      <button onclick="addLesson()">הוסף</button>
-    </div>
-    <div id="availableLessons">
-      <h3>רשימת שיעורים:</h3>
-      <ul id="lessonsList"></ul>
-    </div>
-    
-    <hr>
-    
-    <h2>הוספת תאריכים ושעות זמינים</h2>
-    <div id="addTimesForm">
-      <input type="date" id="newDate">
-      <input type="time" id="newTime">
-      <button onclick="addTimeSlot()">הוסף</button>
-    </div>
-    <div id="availableTimes">
-      <h3>רשימת תאריכים ושעות זמינים:</h3>
-      <ul id="timesList"></ul>
-    </div>
-    
-    <hr>
-    
-    <h2>רשימת נרשמים</h2>
-    <table id="regTable">
-      <tr><th>שם</th><th>שיעור</th><th>תאריך</th><th>שעה</th><th>סטטוס</th><th>פעולות</th></tr>
-    </table>
-    <button class="csv" onclick="exportCSV()">⬇️ הורד CSV</button>
-    <p><a href="index.html" style="color:#000;">⬅️ חזרה לעמוד הבית</a></p>
-  </div>
+  <div id="adminArea" style="display:none;">
+    <button onclick="logout()" style="position:absolute; top:20px; left:20px;">התנתקות</button>
+    <div id="adminHeaderInfo" style="margin-bottom: 20px;"></div>
+    <h2>ניהול שיעורים</h2>
+    <div id="addLessonForm">
+      <input type="text" id="newLesson" placeholder="שם שיעור חדש">
+      <button onclick="addLesson()">הוסף</button>
+    </div>
+    <div id="availableLessons">
+      <h3>רשימת שיעורים:</h3>
+      <ul id="lessonsList"></ul>
+    </div>
+    <hr>
+    <h2>הוספת תאריכים ושעות זמינים</h2>
+    <div id="addTimesForm">
+      <input type="date" id="newDate">
+      <input type="time" id="newTime">
+      <button onclick="addTimeSlot()">הוסף</button>
+    </div>
+    <div id="availableTimes">
+      <h3>רשימת תאריכים ושעות זמינים:</h3>
+      <ul id="timesList"></ul>
+    </div>
+    <hr>
+    <h2>רשימת נרשמים</h2>
+    <table id="regTable">
+      <tr><th>שם</th><th>שיעור</th><th>תאריך</th><th>שעה</th><th>סטטוס</th><th>פעולות</th></tr>
+    </table>
+    <button class="csv" onclick="exportCSV()">⬇️ הורד CSV</button>
+  </div>
 </div>
 
 <script src="script.js"></script>
 </body>
 </html>
+
