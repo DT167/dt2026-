@@ -3,44 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>רישום לתגבורים שנת 2026 מחצית א</title>
+<title>הארגון שלי</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header class="site-header">
-  <div class="header-container">
-    <img src="logo.img" alt="לוגו שמאל" class="logo-lg">
-    <h1>רישום לתגבורים שנת 2026 מחצית א</h1>
-    <img src="logo.img" alt="לוגו ימין" class="logo-lg">
+<div class="hero index" id="hero">
+  <div class="header">
+    <img src="logo-left.png" class="logo left">
+    <img src="logo-center.png" class="logo center">
+    <img src="logo-right.png" class="logo right">
+    <h1>ברוכים הבאים לארגון שלי 🚀</h1>
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-</header>
 
-<div id="sidebar" class="sidebar">
-  <nav>
-    <a href="index.html">בית</a>
-    <a href="info.html">מידע</a>
-    <a href="register.html">רישום</a>
-    <a href="admin.html">מנהל</a>
-  </nav>
+  <div class="cards">
+    <div class="card" onclick="location.href='register.html'"><div class="card-inner"><div class="card-front"><h2>📚 רישום</h2></div><div class="card-back"><p>הירשם לשיעורים שלנו</p></div></div></div>
+    <div class="card" onclick="location.href='admin.html'"><div class="card-inner"><div class="card-front"><h2>📝 ניהול</h2></div><div class="card-back"><p>צפה ואשר נרשמים</p></div></div></div>
+    <div class="card" onclick="location.href='about.html'"><div class="card-inner"><div class="card-front"><h2>ℹ️ מידע</h2></div><div class="card-back"><p>קרא עוד על השיעורים שלנו</p></div></div></div>
+    <div class="card" onclick="location.href='admin-login.html'"><div class="card-inner"><div class="card-front"><h2>🔑 מנהלים</h2></div><div class="card-back"><p>כניסה למערכת המנהלים</p></div></div></div>
+  </div>
 </div>
-<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
-
-<main class="container">
-  <section class="hero">
-    <div class="features-grid">
-      <div class="feature-card">פעילות 1</div>
-      <div class="feature-card">פעילות 2</div>
-      <div class="feature-card">פעילות 3</div>
-    </div>
-  </section>
-</main>
-
-<footer class="site-footer">
-  <div class="container">
-    <span>© 2025 פרויקט לתלמידים</span>
-  </div>
-</footer>
 
 <script src="script.js"></script>
 </body>
