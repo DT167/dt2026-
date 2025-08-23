@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<canvas id="bgCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;"></canvas>
+
 <div class="hero index" id="hero">
   <div class="header">
     <img src="logo-left.png" class="logo left">
@@ -41,6 +43,13 @@
       <div class="card-inner">
         <div class="card-front"><h2>ℹ️ מידע</h2></div>
         <div class="card-back"><p>קרא עוד על השיעורים שלנו</p></div>
+      </div>
+    </div>
+
+    <div class="card" onclick="location.href='org-t.html'">
+      <div class="card-inner">
+        <div class="card-front"><h2>🏢 ארגון T</h2></div>
+        <div class="card-back"><p>קישור לעמוד ארגון T</p></div>
       </div>
     </div>
   </div>
