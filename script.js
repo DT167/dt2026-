@@ -52,4 +52,28 @@ function loadRegs(){
     let btnA=document.createElement("button"); 
     btnA.innerText="אשר"; 
     btnA.classList.add("approve"); 
-    btnA.onclick=()=>
+    btnA.onclick=()=>{r.approved=true; saveAndReload(regs);}; 
+    cell.appendChild(btnA);
+    let btnR=document.createElement("button"); 
+    btnR.innerText="דחה"; 
+    btnR.classList.add("reject"); 
+    btnR.onclick=()=>{regs.splice(i,1); saveAndReload(regs);}; 
+    cell.appendChild(btnR);
+  });
+}
+
+function saveAndReload(regs){
+  localStorage.setItem("registrations",JSON.stringify(regs));
+  loadRegs();
+}
+
+function exportCSV(){
+  let regs=JSON.parse(localStorage.getItem("registrations"))||[];
+  let csv="שם,אימייל,שיעור,תאריך,שעה,סטטוס\n";
+  regs.forEach(r=>{csv+=`${r.name},${r.email},${r.lesson},${r.date},${r.time},${r.approved?"מאושר":"ממתין"}\n`;});
+  let blob=new Blob([csv],{type:"text/csv"});
+  let link=document.createElement("a"); 
+  link.href=URL.createObjectURL(blob); 
+  link.download="registrations.csv"; 
+  link.click();
+}
