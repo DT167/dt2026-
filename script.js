@@ -1,4 +1,59 @@
-// ==================== אנימציית רקע עמוד הבית ====================
+// ==================== רקע תלת-ממדי לעמוד הבית ====================
+const canvas = document.getElementById("bgCanvas");
+if (canvas && document.body.classList.contains("index")) {
+  const ctx = canvas.getContext("2d");
+  let width = canvas.width = window.innerWidth;
+  let height = canvas.height = window.innerHeight;
+
+  const particles = [];
+  const particleCount = 100;
+
+  class Particle {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * height;
+      this.z = Math.random() * width;
+      this.size = Math.random() * 3 + 1;
+      this.speed = Math.random() * 0.05 + 0.02;
+    }
+    update() {
+      this.z -= this.speed * width;
+      if (this.z <= 0) this.reset();
+    }
+    draw() {
+      const scale = 500 / (500 + this.z);
+      const x = (this.x - width / 2) * scale + width / 2;
+      const y = (this.y - height / 2) * scale + height / 2;
+      ctx.beginPath();
+      ctx.arc(x, y, this.size * scale, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.fill();
+    }
+  }
+
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+
+  function animate() {
+    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    ctx.fillRect(0, 0, width, height);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+
+  window.addEventListener("resize", () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+  });
+}
+
+// ==================== אנימציית רקע קלינית קטנה עבור עמוד הבית ====================
 const hero = document.getElementById("hero");
 if (hero && hero.classList.contains("index")) {
   document.addEventListener("mousemove", e => {
@@ -11,7 +66,7 @@ if (hero && hero.classList.contains("index")) {
 // ==================== תפריט המבורגר (לכל העמודים מלבד הבית) ====================
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector(".hamburger");
-  const navMenu = document.querySelector(".nav-menu");
+  const navMenu = document.querySelector(".navMenu");
 
   if (hamburger) {
     hamburger.addEventListener("click", () => {
@@ -257,9 +312,9 @@ function exportCSV() {
   let regs = JSON.parse(localStorage.getItem("registrations")) || [];
   let csv = "שם,שיעור,תאריך,שעה,סטטוס\n";
   regs.forEach(r => { csv += `${r.name},${r.lesson},${r.date},${r.time},${r.approved ? "מאושר" : "ממתין"}\n`; });
-  let blob = new Blob([csv], { type: "text/csv" });
   let link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
+  link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   link.download = "registrations.csv";
   link.click();
 }
+
