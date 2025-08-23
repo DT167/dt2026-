@@ -2,26 +2,20 @@ body { margin:0; padding:0; font-family:Calibri, Arial, sans-serif; text-align:c
 a { color: inherit; text-decoration:none; }
 .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; position:relative; }
 
+/* המבורגר */
+.hamburger { position:fixed; top:20px; left:20px; font-size:2rem; cursor:pointer; z-index:999; }
+.navMenu { position:fixed; top:0; left:0; width:250px; height:100%; background:#111; transform:translateX(-260px); transition:0.3s; z-index:998; }
+.navMenu.active { transform:translateX(0); }
+.navMenu ul { list-style:none; padding:50px 20px; }
+.navMenu li { margin:20px 0; }
+.navMenu a { color:#fff; font-size:1.2rem; }
+
 /* כותרת עם לוגואים */
-.header {
-  position: relative;
-  width: 100%;
-  text-align: center;
-  margin-bottom: 40px;
-}
-.header h1 {
-  font-weight: bold;
-  z-index: 1;
-  position: relative;
-}
-.header .logo {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 60px;
-}
+.header { position: relative; width: 100%; text-align: center; margin-bottom: 40px; }
+.header h1 { font-weight: bold; z-index: 1; position: relative; }
+.header .logo { position: absolute; top: 10px; height: 60px; }
 .header .logo.left { left: 20px; }
-.header .logo.center { left: 50%; transform: translate(-50%, -50%); }
+.header .logo.center { left: 50%; transform: translateX(-50%); }
 .header .logo.right { right: 20px; }
 
 /* כרטיסיות עמוד הבית */
@@ -29,18 +23,16 @@ a { color: inherit; text-decoration:none; }
 .card { perspective: 1000px; cursor:pointer; width:180px; height:180px; }
 .card-inner { position:relative; width:100%; height:100%; transition: transform 0.8s; transform-style: preserve-3d; }
 .card:hover .card-inner { transform: rotateY(180deg); }
-.card-front, .card-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; display:flex; justify-content:center; align-items:center; border-radius:15px; font-weight:bold; font-family:Calibri, Arial, sans-serif; text-align:center; padding:10px; }
+.card-front, .card-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; display:flex; justify-content:center; align-items:center; border-radius:15px; font-weight:bold; text-align:center; padding:10px; }
 .card-front { background:#0072ff; color:#fff; }
 .card-back { background:#00c3ff; color:#fff; transform:rotateY(180deg); }
 
-/* רקעים מותאמים לכל עמוד */
-#hero.index { background: url('tech-bg.jpg') center/cover no-repeat; }
+/* רקעים */
+#hero.index { background:#000; color:#fff; }
 #hero.register { background: linear-gradient(-45deg,#ff7eb3,#ff758c,#ff8e53,#ffbf70); background-size:400% 400%; animation:gradient2 15s ease infinite; color:#fff; padding:20px; }
 @keyframes gradient2 { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
-
 #hero.about { background: linear-gradient(-45deg,#43cea2,#185a9d); background-size:400% 400%; animation:gradient3 15s ease infinite; color:#fff; padding:20px; }
 @keyframes gradient3 { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
-
 #hero.admin { background: linear-gradient(-45deg,#ffb347,#ffcc33); background-size:400% 400%; animation:gradient4 15s ease infinite; color:#000; padding:20px; }
 @keyframes gradient4 { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
 
