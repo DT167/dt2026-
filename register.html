@@ -16,9 +16,17 @@
   </div>
 
   <form id="registerForm">
-    <select id="lesson" required><option value="">-- בחר שיעור --</option><option value="מתמטיקה">מתמטיקה</option><option value="פיזיקה">פיזיקה</option><option value="אנגלית">אנגלית</option></select><br>
-    <input type="date" id="date" required><br>
-    <input type="time" id="time" required><br>
+    <select id="lesson" required>
+      <option value="">-- בחר שיעור --</option>
+      <option value="מתמטיקה">מתמטיקה</option>
+      <option value="פיזיקה">פיזיקה</option>
+      <option value="אנגלית">אנגלית</option>
+    </select><br>
+
+    <select id="dateTimeSlot" required>
+      <option value="">-- בחר תאריך ושעה --</option>
+    </select><br>
+
     <input type="text" id="name" placeholder="שם מלא" required><br>
     <input type="email" id="email" placeholder="אימייל" required><br>
     <button type="submit">הרשמה</button>
@@ -29,6 +37,3 @@
 <script src="script.js"></script>
 </body>
 </html>
-
- 
-
