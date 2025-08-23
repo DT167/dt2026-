@@ -1,51 +1,27 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="he">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>הארגון שלי</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>דף הבית</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="hero index" id="hero">
-  <div class="header">
-    <img src="logo-left.png" class="logo left">
-    <img src="logo-center.png" class="logo center">
-    <img src="logo-right.png" class="logo right">
-    <h1>ברוכים הבאים לארגון שלי 🚀</h1>
+  <!-- שורת לוגואים בראש -->
+  <div class="logo-bar">
+    <img src="logo.img" alt="לוגו שמאל">
+    <img src="logo.img" alt="לוגו אמצע">
+    <img src="logo.img" alt="לוגו ימין">
   </div>
 
-  <div class="cards">
-    <div class="card" onclick="location.href='index.html'">
-      <div class="card-inner">
-        <div class="card-front"><h2>🏠 בית</h2></div>
-        <div class="card-back"><p>חזרה לדף הבית</p></div>
-      </div>
-    </div>
+  <!-- כותרת -->
+  <h1 class="main-title">ברוכים הבאים לארגון שלי 🚀</h1>
 
-    <div class="card" onclick="location.href='register.html'">
-      <div class="card-inner">
-        <div class="card-front"><h2>📚 רישום</h2></div>
-        <div class="card-back"><p>הירשם לשיעורים שלנו</p></div>
-      </div>
-    </div>
-
-    <div class="card" onclick="location.href='admin.html'">
-      <div class="card-inner">
-        <div class="card-front"><h2>🔑 מנהלים</h2></div>
-        <div class="card-back"><p>כניסה למערכת המנהלים</p></div>
-      </div>
-    </div>
-
-    <div class="card" onclick="location.href='info.html'">
-      <div class="card-inner">
-        <div class="card-front"><h2>ℹ️ מידע</h2></div>
-        <div class="card-back"><p>קרא עוד על השיעורים שלנו</p></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src="script.js"></script>
+  <!-- תפריט -->
+  <nav class="nav-bar">
+    <a href="index.html">בית</a>
+    <a href="register.html">רישום</a>
+    <a href="admin.html">מנהלים</a>
+    <a href="info.html">מידע</a>
+  </nav>
 </body>
 </html>
