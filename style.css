@@ -27,8 +27,10 @@ a { color: inherit; text-decoration:none; }
 .card-front { background:#0072ff; color:#fff; }
 .card-back { background:#00c3ff; color:#fff; transform:rotateY(180deg); }
 
-/* רקעים */
-#hero.index { background:#000; color:#fff; }
+/* רקע canvas עמוד הבית */
+#bgCanvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:-1; }
+
+/* רקעים שאר העמודים */
 #hero.register { background: linear-gradient(-45deg,#ff7eb3,#ff758c,#ff8e53,#ffbf70); background-size:400% 400%; animation:gradient2 15s ease infinite; color:#fff; padding:20px; }
 @keyframes gradient2 { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
 #hero.about { background: linear-gradient(-45deg,#43cea2,#185a9d); background-size:400% 400%; animation:gradient3 15s ease infinite; color:#fff; padding:20px; }
