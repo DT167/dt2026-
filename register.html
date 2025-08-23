@@ -8,30 +8,30 @@
 </head>
 <body>
 <div class="hero register" id="hero">
-  <div class="header">
-    <img src="logo-left.png" class="logo left">
-    <img src="logo-center.png" class="logo center">
-    <img src="logo-right.png" class="logo right">
-    <h1>📚 הרשמה לשיעורים</h1>
-  </div>
+  <div class="header">
+    <img src="logo-left.png" class="logo left">
+    <img src="logo-center.png" class="logo center">
+    <img src="logo-right.png" class="logo right">
+    <h1>📚 הרשמה לשיעורים</h1>
+  </div>
 
-  <form id="registerForm">
-    <select id="lesson" required>
-      <option value="">-- בחר שיעור --</option>
-      <option value="מתמטיקה">מתמטיקה</option>
-      <option value="פיזיקה">פיזיקה</option>
-      <option value="אנגלית">אנגלית</option>
-    </select><br>
+  <form id="registerForm">
+        <select id="lesson" required>
+      <option value="">-- בחר שיעור --</option>
+    </select><br>
 
-    <select id="dateTimeSlot" required>
-      <option value="">-- בחר תאריך ושעה --</option>
-    </select><br>
+    <label for="date">בחר תאריך:</label>
+    <input type="date" id="date" required><br>
 
-    <input type="text" id="name" placeholder="שם מלא" required><br>
-    <input type="email" id="email" placeholder="אימייל" required><br>
-    <button type="submit">הרשמה</button>
-  </form>
-  <p><a href="index.html" style="color:#fff;">⬅️ חזרה לעמוד הבית</a></p>
+    <label for="time">בחר שעה:</label>
+    <select id="time" required>
+      <option value="">-- בחר שעה --</option>
+    </select><br>
+
+    <input type="text" id="name" placeholder="שם מלא" required><br>
+    <button type="submit">הרשמה</button>
+  </form>
+  <p><a href="index.html" style="color:#fff;">⬅️ חזרה לעמוד הבית</a></p>
 </div>
 
 <script src="script.js"></script>
