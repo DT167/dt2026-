@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>הרשמה לשיעורים</title>
 <link rel="stylesheet" href="style.css">
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+</script>
 </head>
 <body>
 <div class="hamburger" id="hamburgerMenu">☰</div>
@@ -26,7 +30,8 @@
   </div>
 
   <form id="registerForm">
-        <select id="lesson" required>
+    <label for="lesson">בחר שיעור:</label>
+    <select id="lesson" required>
       <option value="">-- בחר שיעור --</option>
     </select><br>
 
@@ -38,11 +43,11 @@
       <option value="">-- בחר שעה --</option>
     </select><br>
 
+    <label for="name" style="display:none;">שם מלא</label>
     <input type="text" id="name" placeholder="שם מלא" required><br>
     <button type="submit">הרשמה</button>
   </form>
 </div>
-
-<script src="script.js"></script>
+<script src="script.js" type="module"></script>
 </body>
 </html>
