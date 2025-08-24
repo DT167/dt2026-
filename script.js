@@ -6,7 +6,7 @@ if (canvas && document.body.classList.contains("index")) {
   let height = canvas.height = window.innerHeight;
 
   const particles = [];
-  const particleCount = 100;
+  const particleCount = 150; // יותר חלקיקים למראה מרשים
 
   class Particle {
     constructor() {
@@ -18,6 +18,7 @@ if (canvas && document.body.classList.contains("index")) {
       this.z = Math.random() * width;
       this.size = Math.random() * 3 + 1;
       this.speed = Math.random() * 0.05 + 0.02;
+      this.color = `hsl(${Math.random() * 360}, 100%, 70%)`; // צבע ססגוני
     }
     update() {
       this.z -= this.speed * width;
@@ -29,7 +30,7 @@ if (canvas && document.body.classList.contains("index")) {
       const y = (this.y - height / 2) * scale + height / 2;
       ctx.beginPath();
       ctx.arc(x, y, this.size * scale, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,255,255,0.8)";
+      ctx.fillStyle = this.color;
       ctx.fill();
     }
   }
@@ -39,9 +40,16 @@ if (canvas && document.body.classList.contains("index")) {
   }
 
   function animate() {
-    ctx.fillStyle = "rgba(0,0,0,0.2)";
+    // רקע הדרגתי עם צבעים
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, "rgba(0,0,30,0.3)");
+    gradient.addColorStop(0.5, "rgba(10,10,50,0.3)");
+    gradient.addColorStop(1, "rgba(0,0,30,0.3)");
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
+
     particles.forEach(p => { p.update(); p.draw(); });
+
     requestAnimationFrame(animate);
   }
 
@@ -53,7 +61,7 @@ if (canvas && document.body.classList.contains("index")) {
   });
 }
 
-// ==================== אנימציית רקע קלינית קטנה עבור עמוד הבית ====================
+// ==================== אפקט רקע קליני עם תזוזת עכבר ====================
 const hero = document.getElementById("hero");
 if (hero && hero.classList.contains("index")) {
   document.addEventListener("mousemove", e => {
@@ -317,4 +325,3 @@ function exportCSV() {
   link.download = "registrations.csv";
   link.click();
 }
-
