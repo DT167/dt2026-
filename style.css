@@ -56,8 +56,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px; /* מרווח בין הלוגואים */
-  margin-bottom: 20px; /* מרווח בין הסמלים לכותרת */
+  gap: 22px; /* מרווח בין הלוגואים */
+  margin-bottom: 25px; /* מרווח בין הסמלים לכותרת */
 }
 
 .header h1 {
@@ -69,12 +69,12 @@ body {
 
 /* גודל בסיסי לכל הלוגואים */
 .header .logo {
-  height: 40px; 
+  height: 80px; 
 }
 
 /* הגדלה של הלוגואים הצדדיים */
 .header .side-logo {
-  height: 50px; 
+  height: 100px; 
 }
 
 /* ==================== כרטיסיות ==================== */
