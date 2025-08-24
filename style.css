@@ -62,12 +62,13 @@ body {
 .header .logo {
   position: absolute;
   top: 10px;
-  height: 60px;
+  height: 40px; 
 }
 
-.header .logo.left { left: 20px; }
-.header .logo.center { left: 50%; transform: translateX(-50%); }
-.header .logo.right { right: 20px; }
+.header .logo.center { 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
 
 /* ==================== כרטיסיות ==================== */
 .cards {
