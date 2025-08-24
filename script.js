@@ -6,7 +6,7 @@ if (canvas && document.body.classList.contains("index")) {
   let height = canvas.height = window.innerHeight;
 
   const particles = [];
-  const particleCount = 150; // יותר חלקיקים למראה מרשים
+  const particleCount = 150; 
 
   class Particle {
     constructor() {
@@ -18,7 +18,7 @@ if (canvas && document.body.classList.contains("index")) {
       this.z = Math.random() * width;
       this.size = Math.random() * 3 + 1;
       this.speed = Math.random() * 0.05 + 0.02;
-      this.color = `hsl(${Math.random() * 360}, 100%, 70%)`; // צבע ססגוני
+      this.color = `hsl(${Math.random() * 360}, 100%, 70%)`; 
     }
     update() {
       this.z -= this.speed * width;
@@ -40,7 +40,6 @@ if (canvas && document.body.classList.contains("index")) {
   }
 
   function animate() {
-    // רקע הדרגתי עם צבעים
     const gradient = ctx.createLinearGradient(0, 0, width, height);
     gradient.addColorStop(0, "rgba(0,0,30,0.3)");
     gradient.addColorStop(0.5, "rgba(10,10,50,0.3)");
@@ -71,7 +70,7 @@ if (hero && hero.classList.contains("index")) {
   });
 }
 
-// ==================== תפריט המבורגר (לכל העמודים מלבד הבית) ====================
+// ==================== תפריט המבורגר (לכל העמודים) ====================
 document.addEventListener("DOMContentLoaded", () => {
   const hamburger = document.querySelector(".hamburger");
   const navMenu = document.querySelector(".navMenu");
@@ -89,15 +88,22 @@ const regForm = document.getElementById("registerForm");
 if (regForm) {
   const dateInput = document.getElementById("date");
   const timeSelect = document.getElementById("time");
+  const lessonSelect = document.getElementById("lesson");
+
+  // נתונים ראשוניים של שיעורים
+  let lessonsData = JSON.parse(localStorage.getItem('lessons')) || [
+    { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed' },
+    { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed' },
+    { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed' },
+  ];
 
   function populateLessons() {
-    const lessonSelect = document.getElementById("lesson");
-    const availableLessons = JSON.parse(localStorage.getItem("availableLessons")) || [];
     lessonSelect.innerHTML = '<option value="">-- בחר שיעור --</option>';
+    const availableLessons = lessonsData.filter(l => l.status === 'open');
     availableLessons.forEach(lesson => {
       const option = document.createElement("option");
-      option.value = lesson;
-      option.textContent = lesson;
+      option.value = lesson.id;
+      option.textContent = lesson.name;
       lessonSelect.appendChild(option);
     });
   }
@@ -125,20 +131,21 @@ if (regForm) {
 
   regForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    let lesson = document.getElementById("lesson").value;
+    let lessonId = document.getElementById("lesson").value;
     let date = dateInput.value;
     let time = timeSelect.value;
     let name = document.getElementById("name").value;
 
-    if (!lesson || !date || !time || !name) {
+    if (!lessonId || !date || !time || !name) {
       alert("אנא מלא את כל השדות.");
       return;
     }
 
+    const lesson = lessonsData.find(l => l.id === lessonId);
     let regs = JSON.parse(localStorage.getItem("registrations")) || [];
     let selectedDateTime = new Date(time);
 
-    regs.push({ lesson, date, time: selectedDateTime.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }), name, approved: false });
+    regs.push({ lesson: lesson.name, date, time: selectedDateTime.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }), name, approved: false });
     localStorage.setItem("registrations", JSON.stringify(regs));
 
     let availableTimes = JSON.parse(localStorage.getItem("availableTimes")) || [];
@@ -156,7 +163,11 @@ if (regForm) {
 
 // ==================== ניהול נרשמים ====================
 let availableTimes = JSON.parse(localStorage.getItem("availableTimes")) || [];
-let availableLessons = JSON.parse(localStorage.getItem("availableLessons")) || [];
+let lessonsData = JSON.parse(localStorage.getItem('lessons')) || [
+  { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed' },
+  { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed' },
+  { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed' },
+];
 
 const passInput = document.getElementById("pass");
 if (passInput) {
@@ -209,12 +220,20 @@ function renderTimeSlots() {
 
 function addLesson() {
   const newLessonInput = document.getElementById("newLesson");
-  const newLesson = newLessonInput.value.trim();
-  if (newLesson) {
-    availableLessons.push(newLesson);
-    localStorage.setItem("availableLessons", JSON.stringify(availableLessons));
+  const newLessonName = newLessonInput.value.trim();
+  if (newLessonName) {
+    const newLesson = {
+      id: 'new-' + Date.now(),
+      name: newLessonName,
+      description: 'שיעור חדש פתוח לרישום',
+      status: 'open',
+      isNew: true
+    };
+    lessonsData.push(newLesson);
+    localStorage.setItem("lessons", JSON.stringify(lessonsData));
     renderLessons();
     newLessonInput.value = '';
+    alert('שיעור חדש נוסף בהצלחה!');
   } else {
     alert("אנא הזן שם שיעור.");
   }
@@ -224,18 +243,25 @@ function renderLessons() {
   const lessonsList = document.getElementById("lessonsList");
   if (!lessonsList) return;
   lessonsList.innerHTML = '';
-  availableLessons.forEach((lesson, index) => {
+  lessonsData.forEach(lesson => {
     const li = document.createElement("li");
-    li.textContent = lesson;
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "מחק";
-    deleteBtn.onclick = () => {
-      availableLessons.splice(index, 1);
-      localStorage.setItem("availableLessons", JSON.stringify(availableLessons));
-      renderLessons();
-    };
-    li.appendChild(deleteBtn);
+    li.innerHTML = `
+      <span>${lesson.name} (${lesson.status === 'open' ? 'פתוח' : 'סגור'})</span>
+      <button class="toggle-status" data-id="${lesson.id}">${lesson.status === 'open' ? 'סגור' : 'פתח'}</button>
+    `;
     lessonsList.appendChild(li);
+  });
+  
+  lessonsList.querySelectorAll('.toggle-status').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const id = e.target.dataset.id;
+      const lesson = lessonsData.find(l => l.id === id);
+      if (lesson) {
+        lesson.status = lesson.status === 'open' ? 'closed' : 'open';
+        localStorage.setItem("lessons", JSON.stringify(lessonsData));
+        renderLessons();
+      }
+    });
   });
 }
 
@@ -260,7 +286,7 @@ function checkPass() {
     displayAdminHeaderInfo();
     loadRegs();
     renderTimeSlots();
-    renderLessons();
+    renderLessons(); 
     alert("ברוך הבא למערכת הניהול! ✅");
   } else {
     alert("סיסמה שגויה, נסה שוב. ❌");
@@ -310,7 +336,7 @@ function loadRegs() {
 function saveAndReload(regs) {
   localStorage.setItem("registrations", JSON.stringify(regs));
   localStorage.setItem("availableTimes", JSON.stringify(availableTimes));
-  localStorage.setItem("availableLessons", JSON.stringify(availableLessons));
+  localStorage.setItem("lessons", JSON.stringify(lessonsData)); 
   loadRegs();
   renderTimeSlots();
   renderLessons();
@@ -324,4 +350,58 @@ function exportCSV() {
   link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
   link.download = "registrations.csv";
   link.click();
+}
+
+// ==================== קוד עמוד מידע (info.html) ====================
+const infoPage = document.querySelector('.hero.info');
+if (infoPage) {
+    const courseCardsContainer = document.getElementById('courseCardsContainer');
+    const lessonsData = JSON.parse(localStorage.getItem('lessons')) || [
+        { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed' },
+        { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed' },
+        { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed' },
+    ];
+    
+    function renderLessonCards() {
+        courseCardsContainer.innerHTML = '';
+        lessonsData.forEach(lesson => {
+            const card = document.createElement('div');
+            card.className = 'course-card';
+
+            let newTag = '';
+            if (lesson.isNew) {
+                newTag = `<div class="card-new-tag">שיעור חדש פתוח לרישום</div>`;
+            }
+
+            card.innerHTML = `
+                ${newTag}
+                <div class="card-inner">
+                    <div class="card-front">
+                        <h2>${lesson.name}</h2>
+                        <p>${lesson.description}</p>
+                    </div>
+                    <div class="card-back">
+                        <p>${lesson.status === 'open' ? 'הירשם עכשיו!' : 'השיעור אינו זמין כרגע'}</p>
+                        <a href="#" class="register-btn" data-status="${lesson.status}">הירשם לשיעור</a>
+                    </div>
+                </div>
+            `;
+            courseCardsContainer.appendChild(card);
+        });
+    }
+
+    courseCardsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.register-btn');
+        if (btn) {
+            e.preventDefault();
+            const status = btn.dataset.status;
+            if (status === 'closed') {
+                alert('השיעור אינו זמין כרגע.');
+            } else {
+                window.location.href = 'register.html';
+            }
+        }
+    });
+
+    renderLessonCards();
 }
