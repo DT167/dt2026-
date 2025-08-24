@@ -1,5 +1,4 @@
-// ==================== רקע תלת-ממדי לעמוד הבית ====================
-// ==================== Firebase Configuration ====================
+ // ==================== Firebase Configuration ====================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, onValue, set, push, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
@@ -22,7 +21,6 @@ const registrationsRef = ref(database, 'registrations');
 const availableTimesRef = ref(database, 'availableTimes');
 
 // ==================== Background, Hamburger, etc. (No change) ====================
-// ... (The existing code for the background animation, hamburger menu, etc., remains here)
 const canvas = document.getElementById("bgCanvas");
 if (canvas && document.body.classList.contains("index")) {
   const ctx = canvas.getContext("2d");
@@ -117,18 +115,20 @@ if (regForm) {
 
   // Read data from Firebase
   onValue(lessonsRef, (snapshot) => {
-    lessonsData = snapshot.val() ? Object.values(snapshot.val()) : [];
+    const data = snapshot.val();
+    lessonsData = data ? Object.values(data) : [];
     populateLessons();
   });
   
   onValue(availableTimesRef, (snapshot) => {
-    availableTimes = snapshot.val() ? Object.values(snapshot.val()) : [];
+    const data = snapshot.val();
+    availableTimes = data ? Object.values(data) : [];
     populateTimeSlots();
   });
 
   function populateLessons() {
     lessonSelect.innerHTML = '<option value="">-- בחר שיעור --</option>';
-    const availableLessons = lessonsData.filter(l => l.status === 'open' && l.capacity > 0);
+    const availableLessons = lessonsData.filter(l => l.status === 'open' && l.capacity > 0 && l.isSpecial === false);
     availableLessons.forEach(lesson => {
       const option = document.createElement("option");
       option.value = lesson.id;
@@ -167,51 +167,76 @@ if (regForm) {
       return;
     }
 
-    const lessonIndex = lessonsData.findIndex(l => l.id === lessonId);
-    if (lessonIndex === -1 || lessonsData[lessonIndex].capacity <= 0) {
+    const lessonRef = ref(database, `lessons/${lessonId}`);
+    onValue(lessonRef, (snapshot) => {
+      const lesson = snapshot.val();
+      if (!lesson || lesson.capacity <= 0 || lesson.status === 'closed') {
         alert("הרישום לשיעור זה נסגר.");
         return;
-    }
+      }
+      
+      const updates = {};
+      updates[`/lessons/${lessonId}/capacity`] = lesson.capacity - 1;
+      
+      if (lesson.capacity - 1 <= 0) {
+          updates[`/lessons/${lessonId}/status`] = 'closed';
+      }
+      
+      update(ref(database), updates);
 
-    // Update Firebase with new registration
-    push(registrationsRef, { 
-      lesson: lessonsData[lessonIndex].name, 
-      date, 
-      time: new Date(time).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }), 
-      name, 
-      approved: false 
-    });
+      push(registrationsRef, { 
+        lesson: lesson.name, 
+        date, 
+        time: new Date(time).toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }), 
+        name, 
+        approved: false 
+      });
+      
+      const slotId = Object.keys(availableTimes).find(key => availableTimes[key].dateTime === time);
+      if (slotId) {
+        update(ref(database, `availableTimes/${slotId}`), { reserved: true });
+      }
 
-    // Update Firebase with reduced capacity
-    lessonsData[lessonIndex].capacity--;
-    if (lessonsData[lessonIndex].capacity <= 0) {
-      lessonsData[lessonIndex].status = 'closed';
-    }
-    set(lessonsRef, lessonsData);
-
-    const slotIndex = availableTimes.findIndex(s => s.dateTime === time);
-    if (slotIndex !== -1) {
-      availableTimes[slotIndex].reserved = true;
-      set(availableTimesRef, availableTimes);
-    }
-
-    alert("נרשמת בהצלחה! ✅");
-    this.reset();
+      alert("נרשמת בהצלחה! ✅");
+      this.reset();
+    }, { onlyOnce: true });
   });
 }
 
 // ==================== Admin Page (admin.html) ====================
-let lessonsData = []; // This will be populated by Firebase
-let availableTimes = []; // This will be populated by Firebase
-let registrationsData = {}; // This will hold the key-value pair of registrations
+let lessonsData = {}; 
+let availableTimes = {}; 
+let registrationsData = {}; 
 
 const passInput = document.getElementById("pass");
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const addLessonBtn = document.getElementById("addLessonBtn");
+const addTimeBtn = document.getElementById("addTimeBtn");
+const exportCsvBtn = document.getElementById("exportCsvBtn");
+
+// Event Listeners for the Admin Page
 if (passInput) {
-  passInput.addEventListener("keyup", function (event) {
+  passInput.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
       checkPass();
     }
   });
+}
+if (loginBtn) {
+  loginBtn.addEventListener("click", checkPass);
+}
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", logout);
+}
+if (addLessonBtn) {
+  addLessonBtn.addEventListener("click", addLesson);
+}
+if (addTimeBtn) {
+  addTimeBtn.addEventListener("click", addTimeSlot);
+}
+if (exportCsvBtn) {
+  exportCsvBtn.addEventListener("click", exportCSV);
 }
 
 function addTimeSlot() {
@@ -219,7 +244,6 @@ function addTimeSlot() {
   const newTime = document.getElementById("newTime").value;
   if (newDate && newTime) {
     const dateTimeString = `${newDate}T${newTime}`;
-    // Push new time slot to Firebase
     push(availableTimesRef, { dateTime: dateTimeString, reserved: false });
     document.getElementById("newDate").value = '';
     document.getElementById("newTime").value = '';
@@ -232,7 +256,6 @@ function renderTimeSlots() {
   const timesList = document.getElementById("timesList");
   if (!timesList) return;
   timesList.innerHTML = '';
-  // Use Object.entries to get key-value pairs
   Object.entries(availableTimes).forEach(([key, slot]) => {
     const li = document.createElement("li");
     const date = new Date(slot.dateTime).toLocaleDateString('he-IL');
@@ -245,7 +268,6 @@ function renderTimeSlots() {
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "מחק";
     deleteBtn.onclick = () => {
-      // Remove from Firebase using key
       remove(ref(database, `availableTimes/${key}`));
     };
     li.appendChild(deleteBtn);
@@ -258,14 +280,12 @@ function addLesson() {
   const newLessonName = newLessonInput.value.trim();
   if (newLessonName) {
     const newLesson = {
-      id: 'new-' + Date.now(),
       name: newLessonName,
       description: 'שיעור חדש פתוח לרישום',
       status: 'open',
-      isNew: true,
+      isSpecial: true,
       capacity: 5
     };
-    // Push new lesson to Firebase
     push(lessonsRef, newLesson);
     newLessonInput.value = '';
     alert('שיעור חדש נוסף בהצלחה! ✅');
@@ -283,6 +303,7 @@ function renderLessons() {
     li.innerHTML = `
       <span>${lesson.name} (${lesson.status === 'open' ? 'פתוח' : 'סגור'}) - מקומות: ${lesson.capacity}</span>
       <button class="toggle-status" data-key="${key}" data-status="${lesson.status}">${lesson.status === 'open' ? 'סגור' : 'פתח'}</button>
+      ${lesson.isSpecial ? `<button class="delete-lesson" data-key="${key}">מחק שיעור</button>` : ''}
     `;
     lessonsList.appendChild(li);
   });
@@ -292,8 +313,16 @@ function renderLessons() {
       const key = e.target.dataset.key;
       const currentStatus = e.target.dataset.status;
       const newStatus = currentStatus === 'open' ? 'closed' : 'open';
-      // Update lesson status in Firebase
       update(ref(database, `lessons/${key}`), { status: newStatus });
+    });
+  });
+
+  lessonsList.querySelectorAll('.delete-lesson').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const key = e.target.dataset.key;
+      if (confirm('האם אתה בטוח שברצונך למחוק את השיעור?')) {
+        remove(ref(database, `lessons/${key}`));
+      }
     });
   });
 }
@@ -317,7 +346,6 @@ function checkPass() {
     document.getElementById("loginArea").style.display = "none";
     document.getElementById("adminArea").style.display = "block";
     displayAdminHeaderInfo();
-    // Listen for data changes from Firebase
     onValue(registrationsRef, (snapshot) => {
       registrationsData = snapshot.val() || {};
       loadRegs(registrationsData);
@@ -359,7 +387,6 @@ function loadRegs(regs) {
     btnA.innerText = "אשר";
     btnA.classList.add("approve");
     btnA.onclick = () => { 
-        // Update approved status in Firebase
         update(ref(database, `registrations/${key}`), { approved: true });
     };
     cell.appendChild(btnA);
@@ -367,7 +394,6 @@ function loadRegs(regs) {
     btnR.innerText = "דחה";
     btnR.classList.add("reject");
     btnR.onclick = () => {
-        // Remove registration from Firebase
         remove(ref(database, `registrations/${key}`));
     };
     cell.appendChild(btnR);
@@ -375,7 +401,6 @@ function loadRegs(regs) {
 }
 
 function exportCSV() {
-  // Use the local copy of data to export
   const regs = Object.values(registrationsData);
   let csv = "שם,שיעור,תאריך,שעה,סטטוס\n";
   regs.forEach(r => { csv += `${r.name},${r.lesson},${r.date},${r.time},${r.approved ? "מאושר" : "ממתין"}\n`; });
@@ -398,8 +423,8 @@ if (infoPage) {
     });
 
     function renderLessonCards(lessonsData) {
-        const standardLessons = lessonsData.filter(l => !l.isNew);
-        const newLessons = lessonsData.filter(l => l.isNew && l.status === 'open');
+        const standardLessons = lessonsData.filter(l => !l.isSpecial);
+        const newLessons = lessonsData.filter(l => l.isSpecial);
 
         courseCardsContainer.innerHTML = '';
         uniqueLessonsSection.innerHTML = '';
@@ -411,7 +436,7 @@ if (infoPage) {
 
         if (newLessons.length > 0) {
             const uniqueHeader = document.createElement('h2');
-            uniqueHeader.textContent = 'שיעורים יחודיים';
+            uniqueHeader.textContent = 'שיעורים ייחודיים';
             uniqueLessonsSection.appendChild(uniqueHeader);
 
             const newCardsContainer = document.createElement('div');
@@ -429,19 +454,22 @@ if (infoPage) {
       card.className = 'course-card';
 
       let newTag = '';
-      if (lesson.isNew) {
+      if (lesson.isSpecial) {
           newTag = `<div class="card-new-tag">שיעור חדש פתוח לרישום</div>`;
       }
+      
+      const isAvailable = lesson.status === 'open' && lesson.capacity > 0;
+      const statusText = isAvailable ? 'הירשם עכשיו!' : 'השיעור אינו זמין כרגע';
 
       card.innerHTML = `
           ${newTag}
           <div class="card-inner">
               <div class="card-front">
                   <h2>${lesson.name}</h2>
-                  <p>${lesson.description}</p>
+                  <p>${lesson.description || ''}</p>
               </div>
               <div class="card-back">
-                  <p>${lesson.status === 'open' ? 'הירשם עכשיו!' : 'השיעור אינו זמין כרגע'}</p>
+                  <p>${statusText}</p>
                   <a href="#" class="register-btn" data-status="${lesson.status}" data-lesson-id="${lesson.id}">הירשם לשיעור</a>
               </div>
           </div>
@@ -454,7 +482,7 @@ if (infoPage) {
         if (btn) {
             e.preventDefault();
             const status = btn.dataset.status;
-            if (status === 'closed') {
+            if (status === 'closed' || btn.dataset.lessonId === 'undefined') {
                 alert('השיעור אינו זמין כרגע.');
             } else {
                 window.location.href = 'register.html';
@@ -467,7 +495,7 @@ if (infoPage) {
         if (btn) {
             e.preventDefault();
             const status = btn.dataset.status;
-            if (status === 'closed') {
+            if (status === 'closed' || btn.dataset.lessonId === 'undefined') {
                 alert('השיעור אינו זמין כרגע.');
             } else {
                 window.location.href = 'register.html';
@@ -475,5 +503,3 @@ if (infoPage) {
         }
     });
 }
-
-     
