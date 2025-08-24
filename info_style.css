@@ -103,11 +103,12 @@
   background-color: #0099cc;
 }
 
-/* התאמה למחשב - כרטיסיות בשורה */
+/* ==================== תיקון לגרסת מחשב ==================== */
 @media (min-width: 768px) {
   .hero.info .course-cards-container {
     flex-direction: row;
     justify-content: center;
     max-width: 900px;
+    margin: 50px auto 0;
   }
 }
