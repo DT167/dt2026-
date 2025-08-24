@@ -30,12 +30,19 @@
 }
 
 .hero.info .header h1,
-.hero.info .hamburger {
+.hamburger { /* כעת משפיע על כל ההמבורגרים */
   color: #fff;
 }
 
+#uniqueLessonsSection h2 {
+    color: #fff;
+    text-align: center;
+    margin-top: 50px;
+}
+
 /* קונטיינר לכרטיסיות השיעורים */
-.hero.info .course-cards-container {
+.hero.info .course-cards-container,
+#uniqueLessonsSection .course-cards-container {
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -124,12 +131,10 @@
   background-color: #0099cc;
 }
 
-/* ==================== תיקון לגרסת מחשב ==================== */
+/* ==================== הסרת פריסת המחשב ==================== */
 @media (min-width: 768px) {
-  .hero.info .course-cards-container {
-    flex-direction: row;
-    justify-content: center;
-    max-width: 900px;
-    margin: 50px auto 0;
+  .hero.info .course-cards-container,
+  #uniqueLessonsSection .course-cards-container {
+    flex-direction: column;
   }
 }
