@@ -92,18 +92,18 @@ if (regForm) {
 
   // נתונים ראשוניים של שיעורים
   let lessonsData = JSON.parse(localStorage.getItem('lessons')) || [
-    { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed' },
-    { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed' },
-    { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed' },
+    { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed', capacity: 5 },
+    { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed', capacity: 5 },
+    { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed', capacity: 5 },
   ];
 
   function populateLessons() {
     lessonSelect.innerHTML = '<option value="">-- בחר שיעור --</option>';
-    const availableLessons = lessonsData.filter(l => l.status === 'open');
+    const availableLessons = lessonsData.filter(l => l.status === 'open' && l.capacity > 0);
     availableLessons.forEach(lesson => {
       const option = document.createElement("option");
       option.value = lesson.id;
-      option.textContent = lesson.name;
+      option.textContent = `${lesson.name} (${lesson.capacity} מקומות פנויים)`;
       lessonSelect.appendChild(option);
     });
   }
@@ -142,6 +142,17 @@ if (regForm) {
     }
 
     const lesson = lessonsData.find(l => l.id === lessonId);
+    if (!lesson || lesson.capacity <= 0) {
+        alert("הרישום לשיעור זה נסגר.");
+        return;
+    }
+
+    // הפחתת מקום פנוי
+    lesson.capacity--;
+    if (lesson.capacity <= 0) {
+        lesson.status = 'closed';
+    }
+
     let regs = JSON.parse(localStorage.getItem("registrations")) || [];
     let selectedDateTime = new Date(time);
 
@@ -154,9 +165,13 @@ if (regForm) {
       availableTimes[slotIndex].reserved = true;
       localStorage.setItem("availableTimes", JSON.stringify(availableTimes));
     }
+    
+    // שמירת הנתונים המעודכנים של השיעורים
+    localStorage.setItem("lessons", JSON.stringify(lessonsData));
 
     alert("נרשמת בהצלחה! ✅");
     this.reset();
+    populateLessons();
     populateTimeSlots();
   });
 }
@@ -164,9 +179,9 @@ if (regForm) {
 // ==================== ניהול נרשמים ====================
 let availableTimes = JSON.parse(localStorage.getItem("availableTimes")) || [];
 let lessonsData = JSON.parse(localStorage.getItem('lessons')) || [
-  { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed' },
-  { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed' },
-  { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed' },
+  { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed', capacity: 5 },
+  { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed', capacity: 5 },
+  { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed', capacity: 5 },
 ];
 
 const passInput = document.getElementById("pass");
@@ -227,7 +242,8 @@ function addLesson() {
       name: newLessonName,
       description: 'שיעור חדש פתוח לרישום',
       status: 'open',
-      isNew: true
+      isNew: true,
+      capacity: 5 // קיבולת ברירת מחדל לשיעורים חדשים
     };
     lessonsData.push(newLesson);
     localStorage.setItem("lessons", JSON.stringify(lessonsData));
@@ -246,7 +262,7 @@ function renderLessons() {
   lessonsData.forEach(lesson => {
     const li = document.createElement("li");
     li.innerHTML = `
-      <span>${lesson.name} (${lesson.status === 'open' ? 'פתוח' : 'סגור'})</span>
+      <span>${lesson.name} (${lesson.status === 'open' ? 'פתוח' : 'סגור'}) - מקומות: ${lesson.capacity}</span>
       <button class="toggle-status" data-id="${lesson.id}">${lesson.status === 'open' ? 'סגור' : 'פתח'}</button>
     `;
     lessonsList.appendChild(li);
@@ -257,7 +273,11 @@ function renderLessons() {
       const id = e.target.dataset.id;
       const lesson = lessonsData.find(l => l.id === id);
       if (lesson) {
-        lesson.status = lesson.status === 'open' ? 'closed' : 'open';
+        if (lesson.status === 'open') {
+          lesson.status = 'closed';
+        } else {
+          lesson.status = 'open';
+        }
         localStorage.setItem("lessons", JSON.stringify(lessonsData));
         renderLessons();
       }
@@ -356,41 +376,79 @@ function exportCSV() {
 const infoPage = document.querySelector('.hero.info');
 if (infoPage) {
     const courseCardsContainer = document.getElementById('courseCardsContainer');
+    const uniqueLessonsSection = document.getElementById('uniqueLessonsSection');
     const lessonsData = JSON.parse(localStorage.getItem('lessons')) || [
-        { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed' },
-        { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed' },
-        { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed' },
+        { id: 'electronics', name: 'אלקטרוניקה', description: 'בגרות 10 יחידות', status: 'closed', capacity: 5 },
+        { id: 'physics', name: 'פיזיקה', description: '5 יח"ל', status: 'closed', capacity: 5 },
+        { id: 'hebrew', name: 'מקצועות השפה העברית', description: 'בגרות 2 יח"ל', status: 'closed', capacity: 5 },
     ];
     
     function renderLessonCards() {
+        const standardLessons = lessonsData.filter(l => !l.isNew);
+        const newLessons = lessonsData.filter(l => l.isNew && l.status === 'open');
+
         courseCardsContainer.innerHTML = '';
-        lessonsData.forEach(lesson => {
-            const card = document.createElement('div');
-            card.className = 'course-card';
-
-            let newTag = '';
-            if (lesson.isNew) {
-                newTag = `<div class="card-new-tag">שיעור חדש פתוח לרישום</div>`;
-            }
-
-            card.innerHTML = `
-                ${newTag}
-                <div class="card-inner">
-                    <div class="card-front">
-                        <h2>${lesson.name}</h2>
-                        <p>${lesson.description}</p>
-                    </div>
-                    <div class="card-back">
-                        <p>${lesson.status === 'open' ? 'הירשם עכשיו!' : 'השיעור אינו זמין כרגע'}</p>
-                        <a href="#" class="register-btn" data-status="${lesson.status}">הירשם לשיעור</a>
-                    </div>
-                </div>
-            `;
+        uniqueLessonsSection.innerHTML = '';
+        
+        standardLessons.forEach(lesson => {
+            const card = createCardElement(lesson);
             courseCardsContainer.appendChild(card);
         });
+
+        if (newLessons.length > 0) {
+            const uniqueHeader = document.createElement('h2');
+            uniqueHeader.textContent = 'שיעורים יחודיים';
+            uniqueLessonsSection.appendChild(uniqueHeader);
+
+            const newCardsContainer = document.createElement('div');
+            newCardsContainer.className = 'course-cards-container';
+            newLessons.forEach(lesson => {
+                const card = createCardElement(lesson);
+                newCardsContainer.appendChild(card);
+            });
+            uniqueLessonsSection.appendChild(newCardsContainer);
+        }
+    }
+    
+    function createCardElement(lesson) {
+      const card = document.createElement('div');
+      card.className = 'course-card';
+
+      let newTag = '';
+      if (lesson.isNew) {
+          newTag = `<div class="card-new-tag">שיעור חדש פתוח לרישום</div>`;
+      }
+
+      card.innerHTML = `
+          ${newTag}
+          <div class="card-inner">
+              <div class="card-front">
+                  <h2>${lesson.name}</h2>
+                  <p>${lesson.description}</p>
+              </div>
+              <div class="card-back">
+                  <p>${lesson.status === 'open' ? 'הירשם עכשיו!' : 'השיעור אינו זמין כרגע'}</p>
+                  <a href="#" class="register-btn" data-status="${lesson.status}" data-lesson-id="${lesson.id}">הירשם לשיעור</a>
+              </div>
+          </div>
+      `;
+      return card;
     }
 
     courseCardsContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.register-btn');
+        if (btn) {
+            e.preventDefault();
+            const status = btn.dataset.status;
+            if (status === 'closed') {
+                alert('השיעור אינו זמין כרגע.');
+            } else {
+                window.location.href = 'register.html';
+            }
+        }
+    });
+    
+    uniqueLessonsSection.addEventListener('click', (e) => {
         const btn = e.target.closest('.register-btn');
         if (btn) {
             e.preventDefault();
