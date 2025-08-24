@@ -6,6 +6,10 @@
 <title>מידע על השיעורים</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="info_style.css">
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+</script>
 </head>
 <body>
 <div class="hamburger" id="hamburgerMenu">☰</div>
@@ -34,7 +38,6 @@
   <div id="uniqueLessonsSection">
     </div>
 </div>
-
-<script src="script.js"></script>
+<script src="script.js" type="module"></script>
 </body>
 </html>
