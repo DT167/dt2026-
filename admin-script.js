@@ -12,6 +12,7 @@ const adminArea = document.getElementById('adminArea');
 const loginArea = document.getElementById('loginArea');
 const password = "025429";
 
+// כניסה עם כפתור לחיצה
 loginButton.addEventListener('click', () => {
     if (passInput.value === password) {
         loginArea.style.display = 'none';
@@ -20,6 +21,13 @@ loginButton.addEventListener('click', () => {
         displayAdminHeaderInfo();
     } else {
         alert("סיסמה שגויה, נסה שוב. ❌");
+    }
+});
+
+// כניסה עם מקש אנטר בשדה הסיסמה
+passInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        loginButton.click();
     }
 });
 
