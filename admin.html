@@ -3,68 +3,116 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ניהול נרשמים</title>
-<link rel="stylesheet" href="style.css">
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-</script>
+<title>מערכת ניהול</title>
 </head>
 <body>
-<div class="hamburger" id="hamburgerMenu">☰</div>
-<nav class="navMenu" id="navMenu">
-  <ul>
-    <li><a href="index.html">🏠 בית</a></li>
-    <li><a href="register.html">📚 רישום</a></li>
-    <li><a href="admin.html">🔑 מנהלים</a></li>
-    <li><a href="info.html">ℹ️ מידע</a></li>
-  </ul>
-</nav>
-
-<div class="hero admin" id="hero">
-  <div class="header">
-    <img src="t.jpg" class="logo left">
-    <img src="logo.jpg" class="logo center">
-    <img src="t.jpg" class="logo right">
-    <h1>🔑 ניהול נרשמים</h1>
-  </div>
-
-  <div id="loginArea">
-    <input type="password" id="pass" placeholder="הכנס סיסמה">
-    <button onclick="checkPass()">כניסה</button>
-  </div>
-
-  <div id="adminArea" style="display:none;">
-    <button onclick="logout()" style="position:absolute; top:20px; left:20px;">התנתקות</button>
-    <div id="adminHeaderInfo" style="margin-bottom: 20px;"></div>
-    <h2>ניהול שיעורים</h2>
-    <div id="addLessonForm">
-      <input type="text" id="newLesson" placeholder="שם שיעור חדש">
-      <button onclick="addLesson()">הוסף</button>
-    </div>
-    <div id="availableLessons">
-      <h3>רשימת שיעורים:</h3>
-      <ul id="lessonsList"></ul>
-    </div>
-    <hr>
-    <h2>הוספת תאריכים ושעות זמינים</h2>
-    <div id="addTimesForm">
-      <input type="date" id="newDate">
-      <input type="time" id="newTime">
-      <button onclick="addTimeSlot()">הוסף</button>
-    </div>
-    <div id="availableTimes">
-      <h3>רשימת תאריכים ושעות זמינים:</h3>
-      <ul id="timesList"></ul>
-    </div>
-    <hr>
-    <h2>רשימת נרשמים</h2>
-    <table id="regTable">
-      <tr><th>שם</th><th>שיעור</th><th>תאריך</th><th>שעה</th><th>סטטוס</th><th>פעולות</th></tr>
-    </table>
-    <button class="csv" onclick="exportCSV()">⬇️ הורד CSV</button>
-  </div>
+<div id="loginArea">
+  <input type="password" id="pass" placeholder="סיסמה">
+  <button onclick="checkPass()">התחבר</button>
 </div>
-<script src="script.js" type="module"></script>
+
+<div id="adminArea" style="display:none">
+  <div id="adminHeaderInfo"></div>
+  <h2>ניהול שיעורים</h2>
+  <ul id="lessonsList"></ul>
+
+  <h3>הוספת שיעור חדש</h3>
+  <input type="text" id="newLesson" placeholder="שם השיעור">
+  <input type="date" id="newDate">
+  <input type="time" id="newTime">
+  <input type="text" id="newZoom" placeholder="קישור זום">
+  <button onclick="addLesson()">הוסף שיעור</button>
+  <button onclick="logout()">התנתק</button>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAzLYn1Ct-dN7Z6KeTuyklbZLTuOzx6Ii8",
+  authDomain: "dt2026-7c72e.firebaseapp.com",
+  projectId: "dt2026-7c72e",
+  storageBucket: "dt2026-7c72e.firebasestorage.app",
+  messagingSenderId: "41614721790",
+  appId: "1:41614721790:web:7b502f301566a2da401baf",
+  measurementId: "G-8J914KEKL7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const passInput = document.getElementById("pass");
+passInput.addEventListener("keyup", (e) => { if(e.key==="Enter") checkPass(); });
+
+async function checkPass() {
+  if(passInput.value === "025429"){
+    document.getElementById("loginArea").style.display="none";
+    document.getElementById("adminArea").style.display="block";
+    displayAdminHeaderInfo();
+    renderAdmin();
+    alert("ברוך הבא למערכת הניהול! ✅");
+  } else alert("סיסמה שגויה ❌");
+}
+
+function logout(){
+  document.getElementById("adminArea").style.display="none";
+  document.getElementById("loginArea").style.display="block";
+  passInput.value="";
+  alert("התנתקת בהצלחה 👋");
+}
+
+function displayAdminHeaderInfo(){
+  const infoDiv = document.getElementById('adminHeaderInfo');
+  const now = new Date();
+  const days = ["ראשון","שני","שלישי","רביעי","חמישי","שישי","שבת"];
+  const d = days[now.getDay()];
+  const date = now.toLocaleDateString('he-IL');
+  const time = now.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  infoDiv.innerHTML=`<p><strong>${d}, ${date}</strong> | <strong>${time}</strong></p>`;
+}
+
+async function renderAdmin(){
+  const lessonsRef = ref(db,'lessons');
+  const snap = await get(lessonsRef);
+  const data = snap.exists()?snap.val():{};
+  const list = document.getElementById("lessonsList");
+  list.innerHTML="";
+  Object.values(data).forEach(lesson=>{
+    const li = document.createElement("li");
+    li.innerHTML=`<span>${lesson.name} (${lesson.status==='open'?'פתוח':'סגור'}) - מקומות: ${lesson.capacity}</span>
+    <button class="toggle-status" data-id="${lesson.id}">${lesson.status==='open'?'סגור':'פתח'}</button>`;
+    list.appendChild(li);
+  });
+  list.querySelectorAll('.toggle-status').forEach(btn=>{
+    btn.addEventListener('click',async e=>{
+      const id=e.target.dataset.id;
+      const lRef = ref(db, `lessons/${id}`);
+      const lSnap = await get(lRef);
+      if(!lSnap.exists()) return;
+      const l = lSnap.val();
+      await update(lRef,{status: l.status==='open'?'closed':'open'});
+      renderAdmin();
+    });
+  });
+}
+
+async function addLesson(){
+  const name=document.getElementById("newLesson").value.trim();
+  const date=document.getElementById("newDate").value;
+  const time=document.getElementById("newTime").value;
+  const zoom=document.getElementById("newZoom").value.trim();
+  if(!name || !date || !time) return alert("אנא מלא שם, תאריך ושעה");
+  const id='new-'+Date.now();
+  const obj={id,name,status:'open',capacity:5,isNew:true,dateTime:`${date}T${time}`,zoom};
+  await set(ref(db,`lessons/${id}`),obj);
+  alert("שיעור חדש נוסף ✅");
+  document.getElementById("newLesson").value="";
+  document.getElementById("newDate").value="";
+  document.getElementById("newTime").value="";
+  document.getElementById("newZoom").value="";
+  renderAdmin();
+}
+</script>
 </body>
 </html>
