@@ -3,68 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מידע על שיעורים</title>
+<title>מידע על השיעורים</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="info_style.css">
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+</script>
 </head>
 <body>
-<h1>שיעורים</h1>
-<div id="courseCardsContainer"></div>
-<div id="uniqueLessonsSection"></div>
+<div class="hamburger" id="hamburgerMenu">☰</div>
+<nav class="navMenu" id="navMenu">
+  <ul>
+    <li><a href="index.html">🏠 בית</a></li>
+    <li><a href="register.html">📚 רישום</a></li>
+    <li><a href="admin.html">🔑 מנהלים</a></li>
+    <li><a href="info.html">ℹ️ מידע</a></li>
+  </ul>
+</nav>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+<div class="hero info" id="hero">
+  <div class="header">
+    <div class="logo-container">
+      <img src="t.jpg" alt="Logo" class="logo side-logo">
+      <img src="logo.jpg" alt="Logo" class="logo center-logo">
+      <img src="t.jpg" alt="Logo" class="logo side-logo">
+    </div>
+    <h1>ℹ️ מידע על השיעורים</h1>
+  </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAzLYn1Ct-dN7Z6KeTuyklbZLTuOzx6Ii8",
-  authDomain: "dt2026-7c72e.firebaseapp.com",
-  projectId: "dt2026-7c72e",
-  storageBucket: "dt2026-7c72e.firebasestorage.app",
-  messagingSenderId: "41614721790",
-  appId: "1:41614721790:web:7b502f301566a2da401baf",
-  measurementId: "G-8J914KEKL7"
-};
+  <div class="course-cards-container" id="courseCardsContainer">
+    </div>
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-
-const courseCardsContainer = document.getElementById('courseCardsContainer');
-const uniqueLessonsSection = document.getElementById('uniqueLessonsSection');
-
-onValue(ref(db,'lessons'), snapshot => {
-  const lessons = snapshot.exists()?snapshot.val():{};
-  const now = new Date();
-
-  const standardLessons = Object.values(lessons).filter(l=>!l.isNew);
-  const newLessons = Object.values(lessons).filter(l=>l.isNew && l.status==='open' && new Date(l.dateTime)>=now);
-
-  courseCardsContainer.innerHTML='';
-  uniqueLessonsSection.innerHTML='';
-
-  standardLessons.forEach(lesson=>{ courseCardsContainer.appendChild(createCard(lesson)); });
-
-  if(newLessons.length>0){
-    const header=document.createElement('h2');
-    header.textContent='שיעורים יחודיים';
-    uniqueLessonsSection.appendChild(header);
-
-    const container=document.createElement('div');
-    container.className='course-cards-container';
-    newLessons.forEach(l=>container.appendChild(createCard(l)));
-    uniqueLessonsSection.appendChild(container);
-  }
-});
-
-function createCard(lesson){
-  const card=document.createElement('div');
-  card.className='course-card';
-  let newTag='';
-  if(lesson.isNew && lesson.status==='open') newTag='<div class="card-new-tag">שיעור פעיל</div>';
-  card.innerHTML=`${newTag}<div class="card-inner">
-      <div class="card-front"><h2>${lesson.name}</h2><p>${lesson.description||''}</p></div>
-      <div class="card-back"><p>${lesson.status==='open'?'הירשם עכשיו!':'השיעור אינו זמין כרגע'}</p></div>
-  </div>`;
-  return card;
-}
-</script>
+  <div id="uniqueLessonsSection">
+    </div>
+</div>
+<script src="script.js" type="module"></script>
 </body>
 </html>
