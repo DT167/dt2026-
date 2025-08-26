@@ -1,1 +1,72 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול נרשמים</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="hamburger" id="hamburgerMenu">☰</div>
+    <nav class="navMenu" id="navMenu">
+        <ul>
+            <li><a href="index.html">🏠 בית</a></li>
+            <li><a href="register.html">📚 רישום</a></li>
+            <li><a href="admin.html">🔑 מנהלים</a></li>
+            <li><a href="info.html">ℹ️ מידע</a></li>
+        </ul>
+    </nav>
+    <div class="hero admin" id="hero">
+        <div class="header">
+            <img src="t.jpg" class="logo left">
+            <img src="logo.jpg" class="logo center">
+            <img src="t.jpg" class="logo right">
+            <h1>🔑 ניהול נרשמים</h1>
+        </div>
+        <div id="loginArea">
+            <input type="password" id="pass" placeholder="הכנס סיסמה">
+            <button id="loginButton">כניסה</button>
+        </div>
+        <div id="adminArea" style="display:none;">
+            <button id="logoutButton" style="position:absolute; top:20px; left:20px;">התנתקות</button>
+            <div id="adminHeaderInfo" style="margin-bottom: 20px;"></div>
+            <h2>ניהול שיעורים</h2>
+            
+            <div id="addUniqueLessonForm">
+                <h3>הוספת שיעור ייחודי</h3>
+                <input type="text" id="uniqueLessonName" placeholder="שם שיעור חדש">
+                <input type="date" id="uniqueLessonDate">
+                <input type="time" id="uniqueLessonTime">
+                <input type="url" id="uniqueLessonZoomLink" placeholder="קישור לזום">
+                <input type="number" id="uniqueLessonMaxParticipants" placeholder="מספר נרשמים מקסימלי">
+                <button id="addUniqueLessonButton">הוסף שיעור</button>
+            </div>
+            
+            <hr>
+            
+            <div id="manageExistingLessons">
+                <h3>הפעלת שיעור קיים</h3>
+                <p>בחר שיעור מהרשימה והגדר לו פרטים</p>
+                <div id="existingLessonsList">
+                    </div>
+            </div>
 
+            <hr>
+            
+            <h2>רשימת שיעורים פעילים</h2>
+            <div id="activeLessonsList">
+                <p>שיעורים פעילים יופיעו כאן עם אפשרות לערוך או לבטל.</p>
+            </div>
+            
+            <hr>
+            
+            <h2>רשימת נרשמים לכל השיעורים</h2>
+            <table id="regTable">
+                <tr><th>שם</th><th>שיעור</th><th>תאריך</th><th>שעה</th><th>סטטוס</th><th>פעולות</th></tr>
+            </table>
+            <button id="exportCsvButton" class="csv">⬇️ הורד CSV</button>
+        </div>
+    </div>
+    <script type="module" src="admin-script.js"></script>
+</body>
+</html>
