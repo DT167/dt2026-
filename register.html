@@ -1,53 +1,38 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>הרשמה לשיעורים</title>
-<link rel="stylesheet" href="style.css">
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>הרשמה לשיעורים</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="hamburger" id="hamburgerMenu">☰</div>
-<nav class="navMenu" id="navMenu">
-  <ul>
-    <li><a href="index.html">🏠 בית</a></li>
-    <li><a href="register.html">📚 רישום</a></li>
-    <li><a href="admin.html">🔑 מנהלים</a></li>
-    <li><a href="info.html">ℹ️ מידע</a></li>
-  </ul>
-</nav>
-
-<div class="hero register" id="hero">
-  <div class="header">
-    <img src="t.jpg" class="logo left">
-    <img src="logo.jpg" class="logo center">
-    <img src="t.jpg" class="logo right">
-    <h1>📚 הרשמה לשיעורים</h1>
-  </div>
-
-  <form id="registerForm">
-    <label for="lesson">בחר שיעור:</label>
-    <select id="lesson" required>
-      <option value="">-- בחר שיעור --</option>
-    </select><br>
-
-    <label for="date">בחר תאריך:</label>
-    <input type="date" id="date" required><br>
-
-    <label for="time">בחר שעה:</label>
-    <select id="time" required>
-      <option value="">-- בחר שעה --</option>
-    </select><br>
-
-    <label for="name" style="display:none;">שם מלא</label>
-    <input type="text" id="name" placeholder="שם מלא" required><br>
-    <button type="submit">הרשמה</button>
-  </form>
-</div>
-<script src="script.js" type="module"></script>
+    <div class="hamburger" id="hamburgerMenu">☰</div>
+    <nav class="navMenu" id="navMenu">
+        <ul>
+            <li><a href="index.html">🏠 בית</a></li>
+            <li><a href="register.html">📚 רישום</a></li>
+            <li><a href="admin.html">🔑 מנהלים</a></li>
+            <li><a href="info.html">ℹ️ מידע</a></li>
+        </ul>
+    </nav>
+    <div class="hero register" id="hero">
+        <div class="header">
+            <img src="t.jpg" class="logo left">
+            <img src="logo.jpg" class="logo center">
+            <img src="t.jpg" class="logo right">
+            <h1>📚 הרשמה לשיעורים</h1>
+        </div>
+        <form id="registerForm">
+            <label for="lesson">בחר שיעור:</label>
+            <select id="lesson" required>
+                <option value="">-- בחר שיעור --</option>
+            </select><br>
+            <label for="name">שם מלא:</label>
+            <input type="text" id="name" placeholder="שם מלא" required><br>
+            <button type="submit">הרשמה</button>
+        </form>
+    </div>
+    <script type="module" src="register-script.js"></script>
 </body>
 </html>
