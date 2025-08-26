@@ -1,43 +1,36 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>מידע על השיעורים</title>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="info_style.css">
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מידע על השיעורים</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="info_style.css">
 </head>
 <body>
-<div class="hamburger" id="hamburgerMenu">☰</div>
-<nav class="navMenu" id="navMenu">
-  <ul>
-    <li><a href="index.html">🏠 בית</a></li>
-    <li><a href="register.html">📚 רישום</a></li>
-    <li><a href="admin.html">🔑 מנהלים</a></li>
-    <li><a href="info.html">ℹ️ מידע</a></li>
-  </ul>
-</nav>
-
-<div class="hero info" id="hero">
-  <div class="header">
-    <div class="logo-container">
-      <img src="t.jpg" alt="Logo" class="logo side-logo">
-      <img src="logo.jpg" alt="Logo" class="logo center-logo">
-      <img src="t.jpg" alt="Logo" class="logo side-logo">
-    </div>
-    <h1>ℹ️ מידע על השיעורים</h1>
-  </div>
-
-  <div class="course-cards-container" id="courseCardsContainer">
-    </div>
-
-  <div id="uniqueLessonsSection">
-    </div>
-</div>
-<script src="script.js" type="module"></script>
+    <div class="hamburger" id="hamburgerMenu">☰</div>
+    <nav class="navMenu" id="navMenu">
+        <ul>
+            <li><a href="index.html">🏠 בית</a></li>
+            <li><a href="register.html">📚 רישום</a></li>
+            <li><a href="admin.html">🔑 מנהלים</a></li>
+            <li><a href="info.html">ℹ️ מידע</a></li>
+        </ul>
+    </nav>
+    <div class="hero info" id="hero">
+        <div class="header">
+            <div class="logo-container">
+                <img src="t.jpg" alt="Logo" class="logo side-logo">
+                <img src="logo.jpg" alt="Logo" class="logo center-logo">
+                <img src="t.jpg" alt="Logo" class="logo side-logo">
+            </div>
+            <h1>ℹ️ מידע על השיעורים</h1>
+        </div>
+        <div class="course-cards-container" id="courseCardsContainer">
+            </div>
+        <div id="uniqueLessonsSection">
+            </div>
+    </div>
+    <script type="module" src="info-script.js"></script>
 </body>
 </html>
