@@ -10,7 +10,8 @@ const loginButton = document.getElementById('loginButton');
 const logoutButton = document.getElementById('logoutButton');
 const adminArea = document.getElementById('adminArea');
 const loginArea = document.getElementById('loginArea');
-const password = "025429";
+// כרגע הסיסמה עדיין בקוד גלוי לצורך פשטות התיקון, אך מומלץ להעביר את זה למערכת אימות משתמשים.
+const password = "025429"; 
 
 // כניסה עם כפתור לחיצה
 loginButton.addEventListener('click', () => {
@@ -19,6 +20,7 @@ loginButton.addEventListener('click', () => {
         adminArea.style.display = 'block';
         alert("ברוך הבא למערכת הניהול! ✅");
         displayAdminHeaderInfo();
+        deletePastLessons(); // מחיקת שיעורים שעבר זמנם בעת הכניסה
     } else {
         alert("סיסמה שגויה, נסה שוב. ❌");
     }
@@ -49,7 +51,24 @@ function displayAdminHeaderInfo() {
     infoDiv.innerHTML = `<p><strong>${dayOfWeek}, ${date}</strong> | <strong>${time}</strong></p><p><strong>הנהגה עליונה ארגון החירות והצדק</strong></p>`;
 }
 
-// טיפול בהוספת שיעור ייחודי חדש
+// מחיקת שיעורים אוטומטית שחלפו
+async function deletePastLessons() {
+    const activeLessonsRef = ref(db, 'lessons/active');
+    const snapshot = await get(activeLessonsRef);
+    if (snapshot.exists()) {
+        const now = new Date();
+        snapshot.forEach(childSnapshot => {
+            const lesson = childSnapshot.val();
+            const lessonDateTime = new Date(`${lesson.date}T${lesson.time}`);
+            if (lessonDateTime < now) {
+                remove(ref(db, `lessons/active/${childSnapshot.key}`));
+                console.log(`שיעור ${lesson.name} בוטל אוטומטית כי מועדו חלף.`);
+            }
+        });
+    }
+}
+
+// הוספת שיעור ייחודי
 const addUniqueLessonButton = document.getElementById('addUniqueLessonButton');
 const uniqueLessonNameInput = document.getElementById('uniqueLessonName');
 const uniqueLessonDateInput = document.getElementById('uniqueLessonDate');
@@ -63,30 +82,38 @@ addUniqueLessonButton.addEventListener('click', async () => {
     const time = uniqueLessonTimeInput.value;
     const zoomLink = uniqueLessonZoomLinkInput.value;
     const maxParticipants = parseInt(uniqueLessonMaxParticipantsInput.value, 10);
+    const now = new Date();
+    const lessonDateTime = new Date(`${date}T${time}`);
 
-    if (name && date && time && zoomLink && maxParticipants) {
-        const newLessonRef = push(ref(db, 'lessons/active'));
-        await set(newLessonRef, {
-            name,
-            date,
-            time,
-            zoomLink,
-            maxParticipants,
-            currentParticipants: 0,
-            type: 'unique'
-        });
-        alert('השיעור הייחודי נוסף בהצלחה!');
-        uniqueLessonNameInput.value = '';
-        uniqueLessonDateInput.value = '';
-        uniqueLessonTimeInput.value = '';
-        uniqueLessonZoomLinkInput.value = '';
-        uniqueLessonMaxParticipantsInput.value = '';
-    } else {
+    if (!name || !date || !time || !zoomLink || !maxParticipants) {
         alert('נא למלא את כל השדות!');
+        return;
     }
+    
+    if (lessonDateTime < now) {
+        alert('לא ניתן להוסיף שיעור במועד שחלף.');
+        return;
+    }
+
+    const newLessonRef = push(ref(db, 'lessons/active'));
+    await set(newLessonRef, {
+        name,
+        date,
+        time,
+        zoomLink,
+        maxParticipants,
+        currentParticipants: 0,
+        type: 'unique'
+    });
+    alert('השיעור הייחודי נוסף בהצלחה!');
+    uniqueLessonNameInput.value = '';
+    uniqueLessonDateInput.value = '';
+    uniqueLessonTimeInput.value = '';
+    uniqueLessonZoomLinkInput.value = '';
+    uniqueLessonMaxParticipantsInput.value = '';
 });
 
-// הצגת רשימת השיעורים הקיימים והפעלתם
+// הצגת רשימת השיעורים הקיימים (בסיסיים)
 const existingLessonsList = document.getElementById('existingLessonsList');
 onValue(ref(db, 'lessons/base'), (snapshot) => {
     existingLessonsList.innerHTML = '';
@@ -109,23 +136,30 @@ onValue(ref(db, 'lessons/base'), (snapshot) => {
             const time = document.getElementById(`time-${lessonId}`).value;
             const zoomLink = document.getElementById(`zoom-${lessonId}`).value;
             const maxParticipants = parseInt(document.getElementById(`max-${lessonId}`).value, 10);
+            const now = new Date();
+            const lessonDateTime = new Date(`${date}T${time}`);
 
-            if (date && time && zoomLink && maxParticipants) {
-                const newActiveLessonRef = push(ref(db, 'lessons/active'));
-                await set(newActiveLessonRef, {
-                    baseLessonId: lessonId,
-                    name: lesson.name,
-                    date,
-                    time,
-                    zoomLink,
-                    maxParticipants,
-                    currentParticipants: 0,
-                    type: 'base'
-                });
-                alert(`השיעור ${lesson.name} הופעל בהצלחה!`);
-            } else {
+            if (!date || !time || !zoomLink || !maxParticipants) {
                 alert('נא למלא את כל השדות להפעלת השיעור.');
+                return;
             }
+            if (lessonDateTime < now) {
+                alert('לא ניתן להפעיל שיעור במועד שחלף.');
+                return;
+            }
+
+            const newActiveLessonRef = push(ref(db, 'lessons/active'));
+            await set(newActiveLessonRef, {
+                baseLessonId: lessonId,
+                name: lesson.name,
+                date,
+                time,
+                zoomLink,
+                maxParticipants,
+                currentParticipants: 0,
+                type: 'base'
+            });
+            alert(`השיעור ${lesson.name} הופעל בהצלחה!`);
         });
     });
 });
@@ -146,8 +180,10 @@ onValue(ref(db, 'lessons/active'), (snapshot) => {
         activeLessonsList.appendChild(div);
 
         document.getElementById(`cancel-${activeLessonId}`).addEventListener('click', async () => {
-            await remove(ref(db, `lessons/active/${activeLessonId}`));
-            alert('השיעור בוטל בהצלחה!');
+            if (confirm('האם אתה בטוח שברצונך לבטל שיעור זה?')) {
+                await remove(ref(db, `lessons/active/${activeLessonId}`));
+                alert('השיעור בוטל בהצלחה!');
+            }
         });
     });
 });
@@ -171,8 +207,10 @@ onValue(ref(db, 'registrations'), (snapshot) => {
         statusCell.textContent = reg.status || "ממתין";
         actionsCell.innerHTML = `<button class="delete-reg-btn">מחק</button>`;
         actionsCell.querySelector('.delete-reg-btn').addEventListener('click', async () => {
-            await remove(ref(db, `registrations/${regId}`));
-            alert('הנרשם נמחק בהצלחה!');
+            if (confirm('האם אתה בטוח שברצונך למחוק נרשם זה?')) {
+                await remove(ref(db, `registrations/${regId}`));
+                alert('הנרשם נמחק בהצלחה!');
+            }
         });
     });
 });
@@ -181,6 +219,10 @@ onValue(ref(db, 'registrations'), (snapshot) => {
 const exportCsvButton = document.getElementById('exportCsvButton');
 exportCsvButton.addEventListener('click', async () => {
     const snapshot = await get(ref(db, 'registrations'));
+    if (!snapshot.exists()) {
+        alert("אין נרשמים לייצא.");
+        return;
+    }
     let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
     const headers = ["שם", "שיעור", "תאריך", "שעה", "סטטוס"];
     csvContent += headers.join(",") + "\n";
@@ -194,6 +236,7 @@ exportCsvButton.addEventListener('click', async () => {
     link.download = "registrations.csv";
     link.click();
 });
+
 // ==================== תפריט המבורגר (לכל העמודים) ====================
 document.addEventListener("DOMContentLoaded", () => {
     const hamburger = document.querySelector(".hamburger");
