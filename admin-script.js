@@ -4,15 +4,15 @@ import { app } from "./firebase-config.js";
 
 const db = getDatabase(app);
 
-// טיפול בכפתורי התחברות והתנתקות
+// Get a reference to the admin elements
 const passInput = document.getElementById("pass");
 const loginButton = document.getElementById('loginButton');
 const logoutButton = document.getElementById('logoutButton');
 const adminArea = document.getElementById('adminArea');
 const loginArea = document.getElementById('loginArea');
-const password = "025429";
+const password = "025429"; // Simplified password for demo purposes
 
-// כניסה עם כפתור לחיצה
+// Handle login functionality
 loginButton.addEventListener('click', () => {
     if (passInput.value === password) {
         loginArea.style.display = 'none';
@@ -24,13 +24,13 @@ loginButton.addEventListener('click', () => {
     }
 });
 
-// כניסה עם מקש אנטר בשדה הסיסמה
 passInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         loginButton.click();
     }
 });
 
+// Handle logout functionality
 logoutButton.addEventListener('click', () => {
     loginArea.style.display = 'block';
     adminArea.style.display = 'none';
@@ -38,7 +38,7 @@ logoutButton.addEventListener('click', () => {
     alert("התנתקת בהצלחה. להתראות! 👋");
 });
 
-// מחיקת שיעורים אוטומטית שחלפו
+// Delete past lessons automatically
 async function deletePastLessons() {
     const activeLessonsRef = ref(db, 'lessons/active');
     const snapshot = await get(activeLessonsRef);
@@ -55,7 +55,7 @@ async function deletePastLessons() {
     }
 }
 
-// הוספת שיעור ייחודי - תיקון נקודת הבעיה
+// Add a unique lesson - this is the corrected part
 const addUniqueLessonButton = document.getElementById('addUniqueLessonButton');
 if (addUniqueLessonButton) {
     addUniqueLessonButton.addEventListener('click', async () => {
@@ -97,7 +97,7 @@ if (addUniqueLessonButton) {
     });
 }
 
-// הצגת רשימת השיעורים הקיימים (בסיסיים)
+// Display existing lessons for activation
 const existingLessonsList = document.getElementById('existingLessonsList');
 onValue(ref(db, 'lessons/base'), (snapshot) => {
     existingLessonsList.innerHTML = '';
@@ -115,7 +115,6 @@ onValue(ref(db, 'lessons/base'), (snapshot) => {
         `;
         existingLessonsList.appendChild(div);
     });
-    // Attach event listeners after elements are created
     document.querySelectorAll('.activate-btn').forEach(button => {
         button.addEventListener('click', async (event) => {
             const lessonId = event.target.dataset.lessonId;
@@ -153,7 +152,7 @@ onValue(ref(db, 'lessons/base'), (snapshot) => {
     });
 });
 
-// הצגת שיעורים פעילים לניהול
+// Display active lessons for management
 const activeLessonsList = document.getElementById('activeLessonsList');
 onValue(ref(db, 'lessons/active'), (snapshot) => {
     activeLessonsList.innerHTML = '';
@@ -168,7 +167,6 @@ onValue(ref(db, 'lessons/active'), (snapshot) => {
         `;
         activeLessonsList.appendChild(div);
     });
-    // Attach event listeners after elements are created
     document.querySelectorAll('.cancel-btn').forEach(button => {
         button.addEventListener('click', async (event) => {
             const activeLessonId = event.target.dataset.activeId;
@@ -180,34 +178,35 @@ onValue(ref(db, 'lessons/active'), (snapshot) => {
     });
 });
 
-// הצגת רשימת נרשמים
+// Display registration list
 const regTable = document.getElementById('regTable');
 onValue(ref(db, 'registrations'), (snapshot) => {
-    while (regTable.rows.length > 1) {
-        regTable.deleteRow(1);
-    }
-    snapshot.forEach((childSnapshot) => {
-        const reg = childSnapshot.val();
-        const regId = childSnapshot.key;
-        const row = regTable.insertRow(-1);
-        row.insertCell(0).textContent = reg.name;
-        row.insertCell(1).textContent = reg.lessonName;
-        row.insertCell(2).textContent = reg.date;
-        row.insertCell(3).textContent = reg.time;
-        const statusCell = row.insertCell(4);
-        const actionsCell = row.insertCell(5);
-        statusCell.textContent = reg.status || "ממתין";
-        actionsCell.innerHTML = `<button class="delete-reg-btn">מחק</button>`;
-        actionsCell.querySelector('.delete-reg-btn').addEventListener('click', async () => {
-            if (confirm('האם אתה בטוח שברצונך למחוק נרשם זה?')) {
-                await remove(ref(db, `registrations/${regId}`));
-                alert('הנרשם נמחק בהצלחה!');
-            }
+    const tbody = regTable.querySelector('tbody');
+    if (tbody) {
+        tbody.innerHTML = '';
+        snapshot.forEach((childSnapshot) => {
+            const reg = childSnapshot.val();
+            const regId = childSnapshot.key;
+            const row = tbody.insertRow(-1);
+            row.insertCell(0).textContent = reg.name;
+            row.insertCell(1).textContent = reg.lessonName;
+            row.insertCell(2).textContent = reg.date;
+            row.insertCell(3).textContent = reg.time;
+            const statusCell = row.insertCell(4);
+            const actionsCell = row.insertCell(5);
+            statusCell.textContent = reg.status || "ממתין";
+            actionsCell.innerHTML = `<button class="delete-reg-btn" data-reg-id="${regId}">מחק</button>`;
+            actionsCell.querySelector('.delete-reg-btn').addEventListener('click', async () => {
+                if (confirm('האם אתה בטוח שברצונך למחוק נרשם זה?')) {
+                    await remove(ref(db, `registrations/${regId}`));
+                    alert('הנרשם נמחק בהצלחה!');
+                }
+            });
         });
-    });
+    }
 });
 
-// יצוא ל-CSV
+// Export data to CSV
 const exportCsvButton = document.getElementById('exportCsvButton');
 if (exportCsvButton) {
     exportCsvButton.addEventListener('click', async () => {
@@ -230,7 +229,8 @@ if (exportCsvButton) {
         link.click();
     });
 }
-// ==================== תפריט המבורגר (לכל העמודים) ====================
+
+// Hamburger menu
 function initHamburgerMenu() {
     const hamburger = document.querySelector(".hamburger");
     const navMenu = document.querySelector(".navMenu");
