@@ -55,7 +55,7 @@ async function deletePastLessons() {
     }
 }
 
-// הוספת שיעור ייחודי
+// הוספת שיעור ייחודי - תיקון נקודת הבעיה
 const addUniqueLessonButton = document.getElementById('addUniqueLessonButton');
 if (addUniqueLessonButton) {
     addUniqueLessonButton.addEventListener('click', async () => {
@@ -67,7 +67,7 @@ if (addUniqueLessonButton) {
         const now = new Date();
         const lessonDateTime = new Date(`${date}T${time}`);
 
-        if (!name || !date || !time || !zoomLink || !maxParticipants) {
+        if (!name || !date || !time || !zoomLink || isNaN(maxParticipants)) {
             alert('נא למלא את כל השדות!');
             return;
         }
@@ -87,10 +87,15 @@ if (addUniqueLessonButton) {
             currentParticipants: 0,
             type: 'unique'
         });
-        alert('השיעור הייחודי נוסף בהצלחה!');
+        alert('השיעור הייחודי נוסף בהצלחה! 👏');
+        // Clear form fields after successful submission
+        document.getElementById('uniqueLessonName').value = '';
+        document.getElementById('uniqueLessonDate').value = '';
+        document.getElementById('uniqueLessonTime').value = '';
+        document.getElementById('uniqueLessonZoomLink').value = '';
+        document.getElementById('uniqueLessonMaxParticipants').value = '';
     });
 }
-
 
 // הצגת רשימת השיעורים הקיימים (בסיסיים)
 const existingLessonsList = document.getElementById('existingLessonsList');
@@ -124,7 +129,7 @@ onValue(ref(db, 'lessons/base'), (snapshot) => {
             const lessonSnapshot = await get(lessonRef);
             const lesson = lessonSnapshot.val();
 
-            if (!date || !time || !zoomLink || !maxParticipants) {
+            if (!date || !time || !zoomLink || isNaN(maxParticipants)) {
                 alert('נא למלא את כל השדות להפעלת השיעור.');
                 return;
             }
@@ -143,7 +148,7 @@ onValue(ref(db, 'lessons/base'), (snapshot) => {
                 currentParticipants: 0,
                 type: 'base'
             });
-            alert(`השיעור ${lesson.name} הופעל בהצלחה!`);
+            alert(`השיעור ${lesson.name} הופעל בהצלחה! 🎉`);
         });
     });
 });
